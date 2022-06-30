@@ -2,6 +2,7 @@
 from setuptools import setup
 
 setup(
+    #name="ckanext-dbca",
     # If you are changing from the default layout of your extension, you may
     # have to change the message extractors, you can read more about babel
     # message extraction at
@@ -12,5 +13,12 @@ setup(
             ('**.js', 'javascript', None),
             ('**/templates/**.html', 'ckan', None),
         ],
-    }
+    },
+    #namespace_packages=['ckanext'],
+    #packages=['ckanext.dbca'],
+    #zip_safe=False,
+    entry_points='''
+    [ckan.plugins]
+    dbca=ckanext.dbca.plugin:DbcaPlugin
+    ''',
 )
