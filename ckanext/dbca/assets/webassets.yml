@@ -1,14 +1,14 @@
-# dbca-js:
+# dbca_js:
 #   filter: rjsmin
 #   output: ckanext-dbca/%(version)s-dbca.js
 #   contents:
-#     - js/dbca.js
+#     - dbca.js
 #   extra:
 #     preload:
 #       - base/main
 
-# dbca-css:
-#   filter: cssrewrite
-#   output: ckanext-dbca/%(version)s-dbca.css
-#   contents:
-#     - css/dbca.css
+dbca_css:
+  filter: cssrewrite
+  output: ckanext-dbca/%(version)s-dbca_css.css
+  contents:
+    - dbca.css

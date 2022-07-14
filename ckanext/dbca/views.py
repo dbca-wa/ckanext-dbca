@@ -6,7 +6,7 @@ dbca = Blueprint(
 
 
 def page():
-    return "Hello, dbca!"
+    return "Hello, DBCA! This is a custom URL from the extension ckanext-dbca."
 
 
 dbca.add_url_rule(

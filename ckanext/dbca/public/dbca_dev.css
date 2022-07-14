@@ -1,0 +1,8 @@
+/*
+ * To apply changes to this CSS file, reload the CKAN app in the browser.
+ * This CSS file is available as http://localhost:5000/dbca_dev.css
+ * Once production ready, move the contents from here to assets/dbca.css
+ */
+.account-masthead {
+  background-color: rgb(223, 147, 103);
+}
