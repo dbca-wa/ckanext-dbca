@@ -1,0 +1,9 @@
+{#
+Modified from https://github.com/ckan/ckanext-spatial/ > 
+spatial/snippets/dataset_map_sidebar.html
+#}
+    
+<section class="module module-narrow dataset-map">
+<h2 class="module-heading"><i class="icon-medium icon-globe"></i> {{ _('Dataset extent') }}</h2>
+    {% snippet "spatial/snippets/dataset_map_base.html", extent=data[field.field_name] %}
+</section>

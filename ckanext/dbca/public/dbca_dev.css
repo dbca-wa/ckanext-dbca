@@ -3,6 +3,36 @@
  * This CSS file is available as http://localhost:5000/dbca_dev.css
  * Once production ready, move the contents from here to assets/dbca.css
  */
+
+ /* First row: Settings, profile, dashboard, profile settings, logout */
 .account-masthead {
-  background-color: rgb(223, 147, 103);
+  background-color: rgb(14, 19, 48);
+}
+
+.form-control {
+  /* width: 70%; */
+}
+
+/* Fix Flask-debugtoolbar bug: scroll overflowing content */
+.flDebugPanelContentParent{
+  overflow: scroll;
+}
+
+/* Primary content */
+
+.dataset-map-section-20x {
+  padding: 0 25px;
+  margin: 20px 0;
+}
+
+.dataset-map #dataset-map-container{
+  height: 250px;
+}
+
+#dataset-map-attribution{
+  font-size: x-small;
+}
+
+.module-narrow #dataset-map-attribution{
+  margin-left: 3px;
 }
