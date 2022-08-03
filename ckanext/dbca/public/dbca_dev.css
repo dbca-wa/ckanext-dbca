@@ -4,13 +4,109 @@
  * Once production ready, move the contents from here to assets/dbca.css
  */
 
- /* First row: Settings, profile, dashboard, profile settings, logout */
+
+ /* ========================================================================
+   The account masthead: settings, log in, profile
+   ======================================================================== */
 .account-masthead {
-  background-color: rgb(14, 19, 48);
+  background-color: rgb(0,0,0);
 }
 
-.form-control {
-  /* width: 70%; */
+/* ========================================================================
+   The main masthead bar that contains the site logo, nav links, and search
+   ======================================================================== */
+.masthead {
+  background-color: rgb(53, 53, 53);
+}
+
+.logo img {
+  height: 50px;
+}
+.header-text-logo-tagline > h1:nth-child(1) > a:nth-child(1) {
+  color:#e0e0e0
+}
+
+/* ===========================================
+   The content in the middle of the front page
+   =========================================== */
+
+/* Hide featured section */
+.featured {visibility:hidden; height:0px;}
+
+/* The background outside of the hero pane */
+.homepage, .main {
+  height:100%;
+  /*background: url('/static/images/80mile.jpg') no-repeat center center fixed;*/
+  background: url('/img/80mile.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /*font-family: 'Open Sans',Arial,Helvetica,Sans-Serif;*/
+}
+
+/* Block the ugly tiled default background blocking the main bg image */
+.homepage .hero {
+  background: none;
+}
+
+.homepage .module-stats {
+  margin-top: 0rem;
+  margin-left: 1rem;
+  color: #444;
+}
+
+/* Remove the "box shadow" effect around various boxes on the page. */
+.box {
+  box-shadow: none;
+}
+/* Remove the borders around the "Welcome to CKAN" and "Search Your Data"
+   boxes. */
+.hero .box {
+ border: none;
+}
+/* Change the colors of the "Search Your Data" box. */
+.homepage .module-search .module-content {
+  color: rgb(105,115,124);
+  background-color: white;
+}
+/* Change the background color of the "Popular Tags" box. */
+.homepage .module-search .tags {
+  color: rgb(105,115,124);
+  background-color: #FCFCFC;
+}
+
+a, a:active, a:hover, a:focus {
+  color: rgb(32, 57, 157);
+  text-decoration: none;
+}
+
+/* The box around featured orgs/groups */
+.box {
+  border:none;
+}
+
+
+/* ====================================
+   The footer at the bottom of the site
+   ==================================== */
+
+.site-footer {
+  color: rgb(206, 206, 206);
+  background: none;
+  background-color: rgb(53, 53, 53);
+}
+/* The text in the footer. */
+.site-footer,
+.site-footer label,
+.site-footer small {
+  color: #b6b6b6;
+  background-color: rgb(53, 53, 53);
+}
+/* The link texts in the footer. */
+.site-footer a:active, .site-footer a:hover, .site-footer a:focus {
+  color: rgb(153, 168, 248);
+  text-decoration: none;
 }
 
 /* Fix Flask-debugtoolbar bug: scroll overflowing content */
