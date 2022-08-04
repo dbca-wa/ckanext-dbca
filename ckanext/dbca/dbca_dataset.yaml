@@ -37,41 +37,42 @@ dataset_fields:
 
 - field_name: license_id
   label: License
+  help_text: Applying a license to metadata and data ensures that 
+    this dataset can be used by the Department in the future.
   display_property: dcat:Dataset/dcat:distribution/dcat:Distribution/dct:license
   form_snippet: license.html
+  default: "cc-by-sa"
 
 - field_name: owner_org
   label: Organization
   display_property: dct:publisher
   validators: owner_org_validator unicode_safe
-  form_snippet: organization.html
+  form_snippet: dbca_organization.html
 
 - field_name: data_portal
   label: Data Portal
-  help_text: Dataset URL on original data catalogue (set automatically if harvested)
-  help_inline: true
+  help_text: Dataset URL on original data catalogue (set automatically if harvested).
+    Where did the data come from initially?
   display_property: dcat:Dataset/dcat:landingPage
   display_snippet: link.html
 
 - field_name: data_homepage
   label: Data Homepage
-  help_text: URL of access point and detailed metadata of attached data resources
-  help_inline: true
+  help_text: URL of access point and detailed metadata of attached data resources.
+    Where can we learn more about the data?
   display_property: dcat:Dataset/dcat:landingPage
   display_snippet: link.html
 
 - field_name: doi
   label: DOI
   help_text: Digital Object Identifier
-  help_inline: true
   form_placeholder: http://dx.doi.org/xxxx/yyyy
   display_property: dc:identifier
   display_snippet: link.html
 
 - field_name: citation
   label: Citation
-  help_text: Comprehensive attribution of authors and their affiliation
-  help_inline: true
+  help_text: Comprehensive attribution of authors and their affiliation.
   form_placeholder: 'Author AB (year): Publication'
   display_property: citation
   display_snippet: text.html
@@ -79,8 +80,7 @@ dataset_fields:
 - field_name: author
   label: Author
   help_text: The author (dataset custodian) is responsible for the content of attached
-    data resources
-  help_inline: true
+    data resources.
   form_placeholder: Joe Bloggs
   display_property: dc:creator
   hide_field: 'true'
@@ -94,8 +94,7 @@ dataset_fields:
 
 - field_name: maintainer
   label: Maintainer
-  help_text: The metadata maintainer updates this page on behalf of the author
-  help_inline: true
+  help_text: The metadata maintainer updates this page on behalf of the author.
   form_placeholder: Joe Bloggs
   display_property: dc:contributor
   hide_field: 'true'
@@ -110,8 +109,7 @@ dataset_fields:
 - field_name: theme
   label: Theme
   help_text: The government jurisdiction defined business function to which the resource
-    relates
-  help_inline: true
+    relates.
   display_property: agls:function
   preset: select
   choices:
@@ -202,30 +200,26 @@ dataset_fields:
 
 - field_name: language
   label: Language
-  help_text: The primary language of this dataset
-  help_inline: true
+  help_text: The primary language of this dataset.
   form_placeholder: English
   display_property: language
   display_snippet: text.html
 
 - field_name: published_on
   label: Published on
-  help_text: The date on which this dataset was or shall be published
-  help_inline: true
+  help_text: The date on which this dataset was or shall be published.
   display_property: dcat:Dataset/dct:issued
   preset: date
 
 - field_name: last_updated_on
   label: Data last updated on
-  help_text: Last modification of the content of data resources
-  help_inline: true
+  help_text: Last modification of the content of data resources.
   display_property: dcat:Dataset/dct:modified
   preset: date
 
 - field_name: update_frequency
   label: Update Frequency
   help_text: How often will the data resources be updated?
-  help_inline: true
   display_property: dcat:Dataset/dct:accrualPeriodocity
   preset: select
   choices:
@@ -247,21 +241,19 @@ dataset_fields:
     label: unknown
 - field_name: data_temporal_extent_begin
   label: Temporal coverage from
-  help_text: Earliest record in data resources
-  help_inline: true
+  help_text: Earliest record in data resources.
   preset: date
   display_property: dcat:Dataset/dct:temporal
 - field_name: data_temporal_extent_end
   label: Temporal coverage to
-  help_text: Latest record in data resources
-  help_inline: true
+  help_text: Latest record in data resources.
   preset: date
   display_property: dcat:Dataset/dct:temporal
 
 - field_name: spatial
   label: Geospatial Coverage
   display_property: dcat:Dataset/dct:spatial
-  form_placeholder: Paste a valid GeoJSON Multipolygon geometry
+  form_placeholder: Paste a valid GeoJSON Multipolygon geometry here
   form_snippet: dbca_spatial.html
   display_snippet: dbca_spatial.html
   choices:

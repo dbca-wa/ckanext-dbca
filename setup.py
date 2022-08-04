@@ -14,7 +14,7 @@ setup(
             ('**/templates/**.html', 'ckan', None),
         ],
     },
-    version='0.0.5',
+    version='0.0.6',
     author='Florian Mayer',
     author_email='Florian.Mayer@dbca.wa.gov.au',
     url='https://github.com/dbca-wa/ckanext-dbca',
