@@ -36,8 +36,8 @@ dataset_fields:
     data-module-source: "/api/2/util/tag/autocomplete?incomplete=?"
 
 - field_name: license_id
-  label: License
-  help_text: Applying a license to metadata and data ensures that 
+  label: Licence
+  help_text: Applying a licence to metadata and data ensures that 
     this dataset can be used by the Department in the future.
   display_property: dcat:Dataset/dcat:distribution/dcat:Distribution/dct:license
   form_snippet: license.html
