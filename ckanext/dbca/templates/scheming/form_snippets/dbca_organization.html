@@ -1,7 +1,5 @@
 {% macro organization_option_tag(organization, selected_org) %}
-  <option value="{{ organization.id }}"{%
-    if selected_org %} selected="selected"{% endif
-    %}>{{ organization.display_name }}</option>
+  <option value="{{ organization.id }}"{% if selected_org %} selected="selected"{% endif %}>{{ organization.display_name }}</option>
 {% endmacro %}
 
 <div data-module="dataset-visibility">

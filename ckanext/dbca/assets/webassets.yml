@@ -1,14 +1,14 @@
-# dbca_js:
-#   filter: rjsmin
-#   output: ckanext-dbca/%(version)s-dbca.js
-#   contents:
-#     - dbca.js
-#   extra:
-#     preload:
-#       - base/main
+dbca_js:
+  filter: rjsmin
+  output: ckanext-dbca/%(version)s-dbca.js
+  contents:
+    - javascript/modules/dbca-spatial-form.js
+  extra:
+    preload:
+      - base/main
 
 dbca_css:
   filter: cssrewrite
   output: ckanext-dbca/%(version)s-dbca_css.css
   contents:
-    - dbca.css
+    - css/dbca.css
