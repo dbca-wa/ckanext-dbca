@@ -19,14 +19,18 @@
 {% import 'macros/form.html' as form %}
 {% asset 'ckanext-dbca/dbca.js' %}
 {% with 
-    name=field.field_name, 
-    id='field-' + field.field_name,
+    id=field.field_name,
+    name=field.field_name,
     label=h.scheming_language_text(field.label),
     placeholder=h.scheming_language_text(field.form_placeholder),
-    value=data[field.field_name],
+    extent=data[field.field_name],
     error=errors[field.field_name],
     classes=['control-medium'],
-    is_required=h.scheming_field_required(field)
+    is_required=h.scheming_field_required(field),
+    map_id = "dataset-map-container-{}".format(field.field_name),
+    map_config = h.dump_json(h.get_common_map_config()),
+    site_url = h.dump_json(h.url_for('/', qualified=True)),
+    module_url = h.url_for('dataset_new', qualified=True)
 %}
 
 {% call form.input_block(id, label, error, classes, is_required=is_required) %}
@@ -36,13 +40,13 @@
   {% set map_config = h.get_common_map_config() %}
   <div class="dataset-map" 
       data-module="dbca-spatial-form"
-      data-input-id="{{ id }}"
-      data-extent="{{ value }}" 
-      data-module-site_url={{ h.dump_json(h.url_for('/', qualified=True)) }}
-      data-module-url="{{ h.url_for('dataset_new', qualified=True) }}"
-      data-module-map_config="{{ h.dump_json(map_config) }}"
+      data-map-id="{{ map_id }}"
+      data-extent="{{ extent }}" 
+      data-module-site-url="{{ site_url }}"
+      data-module-url="{{ module_url }}"
+      data-module-map-config="{{ map_config }}"
   >
-    <div id="dataset-map-container">
+    <div id="{{ map_id }}">
       {{ placeholder }}
     </div>
     <div id="dataset-map-attribution">
@@ -51,7 +55,7 @@
   </div>
 
   <div class="info-block">Debug: Snippet spatial/snippets/spatial_form.html 
-    received id {{ id }} with map config {{ h.dump_json(map_config) }}</div>
+    received id {{ map_id }} with map extent {{ extent }}</div>
     
   <p></p><!-- a little trailing space -->
 
@@ -63,6 +67,8 @@
   <script src="/js/spatial_form.js" type="text/javascript"> 
 -->
 
+{% include 'spatial/snippets/dataset_map_asset.html' %}
+{% include 'spatial/snippets/spatial_query_asset.html' %}
   
   <!-- choose predefined, on change update input {{ id }} -->
   <script type="text/javascript">

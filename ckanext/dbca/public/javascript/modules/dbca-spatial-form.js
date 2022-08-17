@@ -6,53 +6,55 @@ ckan.module("dbca-spatial-form", function ($, _) {
       row: '<tr><th>{key}</th><td>{value}</td></tr>',
       i18n: {
       },
-      styles: {
-        point:{
-          iconUrl: '/js/vendor/leaflet/images/marker-icon.png',
-          iconSize: [14, 25],
-          iconAnchor: [7, 25]
-        },
-        default_:{
-          color: '#B52',
-          weight: 1,
-          opacity: 1,
-          fillColor: '#FCF6CF',
-          fillOpacity: 0.4
-        },
+      style: {
+        color: '#F06F64',
+        weight: 2,
+        opacity: 1,
+        fillColor: '#F06F64',
+        fillOpacity: 0.1,
+        clickable: false
       },
       default_extent: [[-10, 130], [-40, 110]]
     },
-    initialize: function () {
-      console.log("dbca spatial: initialize");
-
-
-      this.input = $('#' + this.el.data('input-id'))[0];
-      this.extent = this.el.data('extent');
-      this.map_id = 'dataset-map-container'; //-' + this.input;
+    initialize: function () {      
+      this.map_id = this.el.data('map-id');
+      
 
       // hack to make leaflet use a particular location to look for images
-      L.Icon.Default.imagePath = this.options.site_url + 'js/vendor/leaflet/images';
+      //L.Icon.Default.imagePath = this.options.site_url + 'js/vendor/leaflet/images';
+
+      this.extent = this.el.data('extent');
+      if (extent){
+        if (extent instanceof Array) {
+          // Assume it's a pair of coords like [[90, 180], [-90, -180]]
+          this.options.default_extent = user_default_extent;
+        } else if (extent instanceof Object) {
+          // Assume it's a GeoJSON bbox
+          this.options.default_extent = new L.GeoJSON(extent).getBounds();
+        }
+      }
+
 
       jQuery.proxyAll(this, /_on/);
       this.el.ready(this._onReady);
     },
 
     _onReady: function(){
-      console.log("dbca spatial: onReady start");
       
       var map, backgroundLayer, oldExtent, drawnItems, ckanIcon;
-      var ckanIcon = L.Icon.extend({options: this.options.styles.point});
+      var ckanIcon = L.Icon.extend({options: this.options.style});
 
 
       /* Initialise basic map */
-      map = ckan.commonLeafletMap(
+      var map = ckan.commonLeafletMap(
           this.map_id,
           this.options.map_config,
-          {attributionControl: false}
+          {
+            attributionControl: false,
+            drawControlTooltips: true
+          }
       );
       map.fitBounds(this.options.default_extent);
-      console.log("map: ");
-      console.log(map);
 
       /* Add an empty layer for newly drawn items */
       var drawnItems = new L.FeatureGroup();
@@ -61,56 +63,56 @@ ckan.module("dbca-spatial-form", function ($, _) {
 
       /* Add GeoJSON layers for any GeoJSON resources of the dataset */
       //var existingLayers = {};
-      var url = window.location.href.split('dataset/edit/');
-      $.ajax({
-       url: url[0] + 'api/3/action/package_show',
-       data: {id : url[1]},
-       dataType: 'jsonp',
-       success: function(data) {
-         //console.log('Got resources: ' + JSON.stringify(data.result.resources));
-         var r = data.result.resources;
-         for (i in r){
-          if (r[i].format == 'GeoJSON'){
-           //console.log('Found GeoJSON for ' + r[i].name + ' with id ' + r[i].id);   
+      // var url = window.location.href.split('dataset/edit/');
+      // $.ajax({
+      //  url: url[0] + 'api/3/action/package_show',
+      //  data: {id : url[1]},
+      //  dataType: 'jsonp',
+      //  success: function(data) {
+      //    //console.log('Got resources: ' + JSON.stringify(data.result.resources));
+      //    var r = data.result.resources;
+      //    for (i in r){
+      //     if (r[i].format == 'GeoJSON'){
+      //      //console.log('Found GeoJSON for ' + r[i].name + ' with id ' + r[i].id);   
            
-           /* Option 1: Load GeoJSON using leaflet.ajax */
-           //var geojsonLayer = L.geoJson.ajax(r[id].url);
-           //geojsonLayer.addTo(map);
+      //      /* Option 1: Load GeoJSON using leaflet.ajax */
+      //      //var geojsonLayer = L.geoJson.ajax(r[id].url);
+      //      //geojsonLayer.addTo(map);
 
-           /* Option 2: Load GeoJSON using JQuery */
-           $.getJSON(r[i].url, function(data) {
-              var gj = L.geoJson(data, {
-                  pointToLayer: function (feature, latLng) {
-                      return new L.Marker(latLng, {icon: new ckanIcon})
-                  },
-                  onEachFeature: function(feature, layer) {
-                    var body = '';
-                    var row = '<tr><th>{key}</th><td>{value}</td></tr>';
-                    var table = '<table class="table table-striped table-bordered table-condensed" style="width:300px;"><tbody>{body}</tbody></table>';
-                    jQuery.each(feature.properties, function(key, value){
-                      if (value != null && typeof value === 'object') {
-                        value = JSON.stringify(value);
-                      }
-                      body += L.Util.template(row, {key: key, value: value});
-                    });
-                    var popupContent = L.Util.template(table, {body: body});
-                      layer.bindPopup(popupContent);
-                  }
-              });
-              gj.addTo(map);
-              //existingLayers[r[i].name] = gj;
-           }); // end getJSON
-          } // end if
-         } // end for
-         //L.control.layers(existingLayers).addTo(map); // or similar
-       }
-       });
+      //      /* Option 2: Load GeoJSON using JQuery */
+      //      $.getJSON(r[i].url, function(data) {
+      //         var gj = L.geoJson(data, {
+      //             pointToLayer: function (feature, latLng) {
+      //                 return new L.Marker(latLng, {icon: new ckanIcon})
+      //             },
+      //             onEachFeature: function(feature, layer) {
+      //               var body = '';
+      //               var row = '<tr><th>{key}</th><td>{value}</td></tr>';
+      //               var table = '<table class="table table-striped table-bordered table-condensed" style="width:300px;"><tbody>{body}</tbody></table>';
+      //               jQuery.each(feature.properties, function(key, value){
+      //                 if (value != null && typeof value === 'object') {
+      //                   value = JSON.stringify(value);
+      //                 }
+      //                 body += L.Util.template(row, {key: key, value: value});
+      //               });
+      //               var popupContent = L.Util.template(table, {body: body});
+      //                 layer.bindPopup(popupContent);
+      //             }
+      //         });
+      //         gj.addTo(map);
+      //         //existingLayers[r[i].name] = gj;
+      //      }); // end getJSON
+      //     } // end if
+      //    } // end for
+      //    //L.control.layers(existingLayers).addTo(map); // or similar
+      //  }
+      //  });
 
       /* Add existing extent or new layer */
       if (this.extent) {
           /* update = show existing polygon */
           oldExtent = L.geoJson(this.extent, {
-            style: this.options.styles.default_,
+            style: this.options.style,
             pointToLayer: function (feature, latLng) {
               return new L.Marker(latLng, {icon: new ckanIcon})
             }

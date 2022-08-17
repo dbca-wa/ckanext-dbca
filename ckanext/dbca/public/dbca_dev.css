@@ -121,7 +121,7 @@ a, a:active, a:hover, a:focus {
   margin: 20px 0;
 }
 
-.dataset-map #dataset-map-container{
+.dataset-map .leaflet-container {
   height: 250px;
 }
 
