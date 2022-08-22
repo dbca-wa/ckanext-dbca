@@ -40,6 +40,7 @@
   {% set map_config = h.get_common_map_config() %}
   <div class="dataset-map" 
       data-module="dbca-spatial-form"
+      data-input-id="{{ id }}"
       data-map-id="{{ map_id }}"
       data-extent="{{ extent }}" 
       data-module-site-url="{{ site_url }}"

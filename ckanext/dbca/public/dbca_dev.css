@@ -132,3 +132,7 @@ a, a:active, a:hover, a:focus {
 .module-narrow #dataset-map-attribution{
   margin-left: 3px;
 }
+
+.leaflet-popup {
+  width: 400px;
+}
