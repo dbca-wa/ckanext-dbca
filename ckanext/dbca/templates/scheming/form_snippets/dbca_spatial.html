@@ -35,8 +35,6 @@
 
 {% call form.input_block(id, label, error, classes, is_required=is_required) %}
 
-
-  
   {% set map_config = h.get_common_map_config() %}
   <div class="dataset-map" 
       data-module="dbca-spatial-form"
@@ -57,9 +55,8 @@
 
   <p></p><!-- a little trailing space -->
   
-  {% include 'spatial/snippets/dataset_map_asset.html' %}
-  {% include 'spatial/snippets/spatial_query_asset.html' %}
-  {% asset 'js/spatial_form' %}
+  {# include 'spatial/snippets/dataset_map_asset.html' #}
+  {# include 'spatial/snippets/spatial_query_asset.html' #}
   
   <!-- choose predefined, on change update input {{ id }} -->
   <script type="text/javascript">
