@@ -55,21 +55,11 @@
   </div>
   </div>
 
-  <div class="info-block">Debug: Snippet spatial/snippets/spatial_form.html 
-    received id {{ map_id }} with map extent {{ extent }}</div>
-    
   <p></p><!-- a little trailing space -->
-
-  <!-- Production: use asset tag 
-  -->
-    {% asset 'js/spatial_form' %}
-
-<!-- Development: load directly 
-  <script src="/js/spatial_form.js" type="text/javascript"> 
--->
-
-{% include 'spatial/snippets/dataset_map_asset.html' %}
-{% include 'spatial/snippets/spatial_query_asset.html' %}
+  
+  {% include 'spatial/snippets/dataset_map_asset.html' %}
+  {% include 'spatial/snippets/spatial_query_asset.html' %}
+  {% asset 'js/spatial_form' %}
   
   <!-- choose predefined, on change update input {{ id }} -->
   <script type="text/javascript">

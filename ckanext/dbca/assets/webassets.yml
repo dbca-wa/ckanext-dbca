@@ -1,14 +1,19 @@
 dbca_js:
   filter: rjsmin
   output: ckanext-dbca/%(version)s-dbca.js
-  contents:
-    - javascript/modules/dbca-spatial-form.js
   extra:
     preload:
       - base/main
+  contents:
+    - js/vendor/leaflet/leaflet.js
+    - js/vendor/leaflet.draw/leaflet.draw.js
+    - js/common_map.js
+    - js/modules/dbca-spatial-form.js
 
 dbca_css:
   filter: cssrewrite
   output: ckanext-dbca/%(version)s-dbca_css.css
   contents:
+    - js/vendor/leaflet/leaflet.css
+    - js/vendor/leaflet.draw/leaflet.draw.css
     - css/dbca.css
