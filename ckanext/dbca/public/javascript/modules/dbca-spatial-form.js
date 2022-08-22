@@ -24,13 +24,13 @@ ckan.module("dbca-spatial-form", function ($, _) {
       //L.Icon.Default.imagePath = this.options.site_url + 'js/vendor/leaflet/images';
 
       this.extent = this.el.data('extent');
-      if (extent){
-        if (extent instanceof Array) {
+      if (this.extent){
+        if (this.extent instanceof Array) {
           // Assume it's a pair of coords like [[90, 180], [-90, -180]]
-          this.options.default_extent = user_default_extent;
-        } else if (extent instanceof Object) {
+          this.options.default_extent = this.extent;
+        } else if (this.extent instanceof Object) {
           // Assume it's a GeoJSON bbox
-          this.options.default_extent = new L.GeoJSON(extent).getBounds();
+          this.options.default_extent = new L.GeoJSON(this.extent).getBounds();
         }
       }
 
