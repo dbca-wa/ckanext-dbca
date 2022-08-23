@@ -7,7 +7,6 @@ dbca_js:
   contents:
     - js/vendor/leaflet/leaflet.js
     - js/vendor/leaflet.draw/leaflet.draw.js
-    - js/common_map.js
     - js/modules/dbca-spatial-form.js
 
 dbca_css:
