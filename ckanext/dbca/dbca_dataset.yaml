@@ -56,6 +56,11 @@ dataset_fields:
   display_property: dcat:Dataset/dcat:landingPage
   display_snippet: link.html
 
+- field_name: embargo
+  label: Move to Public viewing on
+  preset: dbca_embargo_date
+  display_snippet: dbca_embargo_date.html
+
 - field_name: data_homepage
   label: Data Homepage
   help_text: URL of access point and detailed metadata of attached data resources.
@@ -254,8 +259,8 @@ dataset_fields:
   label: Geospatial Coverage
   display_property: dcat:Dataset/dct:spatial
   form_placeholder: Paste a valid GeoJSON Multipolygon geometry here
-  form_snippet: dbca_spatial.html
-  display_snippet: dbca_spatial.html
+  form_snippet: markdown.html
+  display_snippet: text.html
   choices:
   - label: Western Australia
     value:

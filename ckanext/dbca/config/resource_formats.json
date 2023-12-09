@@ -93,5 +93,5 @@
   ["XSLT", "Extensible Stylesheet Language Transformations", "application/xslt+xml", []],
   ["XYZ", "XYZ Chemical File", "chemical/x-xyz", []],
   ["ZIP", "Zip File", "application/zip", ["zip", "http://purl.org/NET/mediatypes/application/zip"]],
-  ["Darwin Core", "Darwin Core", "application/zip", ["zip"]]
+  ["Darwin Core", "Darwin Core", null, []]
 ]

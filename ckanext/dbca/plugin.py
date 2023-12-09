@@ -5,30 +5,25 @@ import ckan.plugins.toolkit as toolkit
 import ckanext.dbca.cli as cli
 import ckanext.dbca.helpers as helpers
 import ckanext.dbca.views as views
-# from ckanext.dbca.logic import (
-#      action, auth, validators
-# )
+from ckanext.dbca.logic import (validators)
 
 
 class DbcaPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
-    
     # plugins.implements(plugins.IAuthFunctions)
     # plugins.implements(plugins.IActions)
     plugins.implements(plugins.IBlueprint)
     # plugins.implements(plugins.IClick)
     plugins.implements(plugins.ITemplateHelpers)
-    # plugins.implements(plugins.IValidators)
-    
+    plugins.implements(plugins.IValidators)
 
     # IConfigurer
-    
+
     def update_config(self, config_):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
         toolkit.add_resource("assets", "ckanext_dbca")
 
-    
     # IAuthFunctions
 
     # def get_auth_functions(self):
@@ -56,6 +51,5 @@ class DbcaPlugin(plugins.SingletonPlugin):
 
     # IValidators
 
-    # def get_validators(self):
-    #     return validators.get_validators()
-    
+    def get_validators(self):
+        return validators.get_validators()

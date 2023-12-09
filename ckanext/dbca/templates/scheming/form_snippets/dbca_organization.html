@@ -17,8 +17,8 @@
     <label for="field-private" class="control-label">{{ _('Dataset is visible to') }}</label>
     <div class="controls">
       <select id="field-private" name="private" class="form-control">
-          <option value="False" selected="selected">{{_('Everyone at DBCA (Default)')}}</option>
-          <option value="True" >{{_('Only dataset creator (Confidential draft)')}}</option>
+          <option value="False" {% if data.private|trim == 'False' %}selected="selected"{% endif %}>{{_('Everyone at DBCA (Default)')}}</option>
+          <option value="True" {% if data.private|trim == 'True' %}selected="selected"{% endif %}>{{_('Only dataset creator (Confidential draft)')}}</option>
       </select>
     </div>
   </div>

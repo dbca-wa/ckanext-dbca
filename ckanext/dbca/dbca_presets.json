@@ -1,0 +1,14 @@
+{
+    "scheming_presets_version": 1,
+    "about": "these are the default scheming field presets",
+    "about_url": "http://github.com/ckan/ckanext-scheming#preset",
+    "presets": [
+        {
+            "preset_name": "dbca_embargo_date",
+            "values": {
+                "validators": "scheming_isodatetime dbca_embargo_date_validator dbca_embargo_date_package_visibility",
+                "form_snippet": "dbca_embargo_date.html"
+            }
+        }
+    ]
+}
