@@ -10,7 +10,7 @@
     {% set date = parts[0] %}
 {% endif %}
 
-{% if data.get('private', True) == True %}
+{% if data.get('private', 'True')|string == 'True' %}
     {% call form.input(
         field.field_name + '_date',
         id='field-' + field.field_name +  '-date',

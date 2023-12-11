@@ -35,7 +35,7 @@ def dbca_embargo_date_validator(embargo_date):
             tk._(f'The embargo date selected must be in the future')
         )
 
-     # Convert the date to UTC to be saved in database
+    # Convert the date to UTC to be saved in database, the time will be changed to midnight.
     utc_embargo_date = embargo_date.astimezone(pytz.utc)
     utc_embargo_date = utc_embargo_date.replace(tzinfo=None).isoformat()
     log.debug(f"Converted Embargo date to UTC {utc_embargo_date}")
