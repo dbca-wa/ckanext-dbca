@@ -16,21 +16,21 @@ def dbca():
 @dbca.command('scheduled_datasets')
 @click.pass_context
 def scheduled_datasets(ctx):
-    datasets = tk.get_action('dbca_get_datasets_to_be_published_or_notified')({})
+    packages = tk.get_action('dbca_get_packages_to_be_published_or_notified')({})
     flask_app = ctx.meta['flask_app']
     aus_tz = tk.h.get_display_timezone()
 
     with flask_app.test_request_context():
-        for dataset, extras in datasets.get('to_publish', []):
+        for package, package_extras in packages.get('to_publish', []):
             log.info(
-                f"Dataset {dataset.name} is scheduled to be published at {extras.value}"
+                f"Dataset {package.name} is scheduled to be published at {package_extras.value}"
             )
             log.info(f"Current time is {datetime.datetime.now(aus_tz)}")
             try:
-                dataset_name = dataset.name
+                dataset_name = package.name
                 log.info(f"Scheduling Dataset {dataset_name} to be published")
                 data_dict = tk.get_action('package_show')(
-                    {u"ignore_auth": True}, {'id': dataset.id}
+                    {u"ignore_auth": True}, {'id': package.id}
                 )
                 site_user = tk.get_action(u"get_site_user")(
                     {u"ignore_auth": True}, {}
@@ -56,7 +56,7 @@ def scheduled_datasets(ctx):
         # Email notification.
         emails_to_notify = {}
         # Loop through datasets, and build the email list to be notified from given package
-        for package, package_extras in datasets.get('to_notify', []):
+        for package, package_extras in packages.get('to_notify', []):
             try:
                 log.info(
                     f"Send email notification for scheduled dataset {package.name} to be published at {package_extras.value}"
