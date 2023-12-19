@@ -47,7 +47,7 @@ dataset_fields:
   label: Organization
   display_property: dct:publisher
   validators: owner_org_validator unicode_safe
-  form_snippet: dbca_organization.html
+  preset: dataset_organization
 
 - field_name: data_portal
   label: Data Portal
@@ -150,6 +150,8 @@ dataset_fields:
     label: Elevation
   - value: Employment
     label: Employment
+  - value: Environment
+    label: Environment
   - value: Environment and Conservation
     label: Environment and Conservation
   - value: Facilities and Structures
