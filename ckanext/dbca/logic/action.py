@@ -1,12 +1,9 @@
 import datetime
+import pytz
 
 import ckan.model as model
 import ckan.plugins.toolkit as tk
 import ckanext.dbca.logic.schema as schema
-
-from sqlalchemy.sql import func
-from ckan.model.package import Package
-from ckan.model.package_extra import PackageExtra
 
 
 @tk.side_effect_free
@@ -32,19 +29,21 @@ def dbca_get_packages_to_be_published_or_notified(context, data_dict):
     Get all packages that need to be publshed or need to be notified.
     Notification will be sent for package that will be published in the next 7 days.
     '''
-    # Current UTC date
-    utc_now = datetime.datetime.utcnow().date()
+    # UTC now converted to Perth timezone
+    aus_tz = tk.h.get_display_timezone()
+    utc_now = pytz.utc.localize(datetime.datetime.utcnow())
+    local_now = utc_now.astimezone(aus_tz).date()
 
     # Calculate the date 7 days from now
-    date_in_7_days = utc_now + datetime.timedelta(days=7)
+    date_in_7_days = local_now + datetime.timedelta(days=7)
 
     # Query all active private packages with an embargo date
     packages = model.Session.query(model.Package, model.PackageExtra) \
-                                .join(model.PackageExtra, model.Package.id == model.PackageExtra.package_id) \
-                                .filter(model.PackageExtra.key == 'embargo') \
-                                .filter(model.Package.state == 'active') \
-                                .filter(model.Package.private) \
-                                .all()
+        .join(model.PackageExtra, model.Package.id == model.PackageExtra.package_id) \
+        .filter(model.PackageExtra.key == 'embargo') \
+        .filter(model.Package.state == 'active') \
+        .filter(model.Package.private) \
+        .all()
 
     # Lists to hold packages for publishing and notifying
     packages_to_publish = []
@@ -55,7 +54,7 @@ def dbca_get_packages_to_be_published_or_notified(context, data_dict):
         # Convert embargo date string to date object
         embargo_date = datetime.datetime.strptime(package_extra.value, '%Y-%m-%d').date()
 
-        if embargo_date <= utc_now:
+        if embargo_date <= utc_now.date():
             packages_to_publish.append((package, package_extra))
         elif embargo_date == date_in_7_days:
             packages_to_notify.append((package, package_extra))

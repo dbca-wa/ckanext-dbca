@@ -43,9 +43,7 @@ def scheduled_datasets(ctx):
                 tk.get_action('package_update')(context, data_dict)
                 log.info(f"Dataset {dataset_name} is public")
             except tk.NotAuthorized:
-                tk.abort(
-                    403, tk._('Not authorized to perform bulk update')
-                )
+                tk.error_shout('Not authorized to perform bulk update')
                 log.error(
                     f'Error scheduled_datasets {dataset_name}: Site user not authorized to perform bulk update'
                 )
