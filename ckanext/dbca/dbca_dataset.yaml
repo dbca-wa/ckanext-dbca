@@ -47,7 +47,7 @@ dataset_fields:
   label: Organization
   display_property: dct:publisher
   validators: owner_org_validator unicode_safe
-  form_snippet: dbca_organization.html
+  preset: dataset_organization
 
 - field_name: data_portal
   label: Data Portal
@@ -55,6 +55,12 @@ dataset_fields:
     Where did the data come from initially?
   display_property: dcat:Dataset/dcat:landingPage
   display_snippet: link.html
+
+- field_name: embargo
+  label: Move to Public viewing on
+  display_snippet: dbca_embargo_date.html
+  validators: scheming_isodatetime dbca_embargo_date_validator dbca_embargo_date_package_visibility
+  form_snippet: dbca_embargo_date.html
 
 - field_name: data_homepage
   label: Data Homepage
@@ -145,6 +151,8 @@ dataset_fields:
     label: Elevation
   - value: Employment
     label: Employment
+  - value: Environment
+    label: Environment
   - value: Environment and Conservation
     label: Environment and Conservation
   - value: Facilities and Structures
@@ -254,8 +262,8 @@ dataset_fields:
   label: Geospatial Coverage
   display_property: dcat:Dataset/dct:spatial
   form_placeholder: Paste a valid GeoJSON Multipolygon geometry here
-  form_snippet: dbca_spatial.html
-  display_snippet: dbca_spatial.html
+  form_snippet: markdown.html
+  display_snippet: text.html
   choices:
   - label: Western Australia
     value:
