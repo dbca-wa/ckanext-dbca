@@ -54,7 +54,7 @@ def dbca_get_packages_to_be_published_or_notified(context, data_dict):
         # Convert embargo date string to date object
         embargo_date = datetime.datetime.strptime(package_extra.value, '%Y-%m-%d').date()
 
-        if embargo_date <= utc_now.date():
+        if embargo_date <= local_now:
             packages_to_publish.append((package, package_extra))
         elif embargo_date == date_in_7_days:
             packages_to_notify.append((package, package_extra))

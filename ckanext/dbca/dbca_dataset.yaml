@@ -59,8 +59,8 @@ dataset_fields:
 - field_name: embargo
   label: Move to Public viewing on
   display_snippet: dbca_embargo_date.html
-  validators: "scheming_isodatetime dbca_embargo_date_validator dbca_embargo_date_package_visibility"
-  form_snippet: "dbca_embargo_date.html"
+  validators: scheming_isodatetime dbca_embargo_date_validator dbca_embargo_date_package_visibility
+  form_snippet: dbca_embargo_date.html
 
 - field_name: data_homepage
   label: Data Homepage
