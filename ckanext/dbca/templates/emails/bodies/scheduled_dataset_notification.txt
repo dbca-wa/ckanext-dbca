@@ -1,0 +1,6 @@
+Dataset {{ package_name }} is due for release from embargo on {{ release_date }}
+
+If you wish to extend the embargo date, please do so before the embargo release date at {{ package_url }}
+
+Regards
+DBCA Data Catalogue
