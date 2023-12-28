@@ -74,7 +74,7 @@ dataset_fields:
   help_text: Digital Object Identifier
   form_placeholder: http://dx.doi.org/xxxx/yyyy
   display_property: dc:identifier
-  display_snippet: link.html
+  display_snippet: text.html
 
 - field_name: citation
   label: Citation
@@ -90,6 +90,7 @@ dataset_fields:
   form_placeholder: Joe Bloggs
   display_property: dc:creator
   hide_field: 'true'
+  required: 'true'
 
 - field_name: author_email
   label: Author Email
@@ -104,6 +105,7 @@ dataset_fields:
   form_placeholder: Joe Bloggs
   display_property: dc:contributor
   hide_field: 'true'
+  required: 'true'
 
 - field_name: maintainer_email
   label: Maintainer Email
