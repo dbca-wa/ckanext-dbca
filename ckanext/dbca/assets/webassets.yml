@@ -26,3 +26,18 @@ dbca_css:
     - js/vendor/leaflet/leaflet.css
     - js/vendor/leaflet.draw/leaflet.draw.css
     - css/dbca.css
+
+dbca_spatial_field_js:
+  filter: rjsmin
+  output: ckanext-dbca/%(version)s-dbca-spatial-field.js
+  extra:
+    preload:
+      - base/main
+  contents: 
+    - js/modules/dbca-spatial-field.js
+
+dbca_spatial_field_css:
+  filter: cssrewrite
+  output: ckanext-dbca/%(version)s-dbca-spatial-field.css
+  contents: 
+    - css/dbca-spatial-field.css

@@ -1,4 +1,5 @@
 import ckan.model as model
+import json
 
 
 def extract_emails_from_package(package):
@@ -38,7 +39,23 @@ def extract_emails_from_package(package):
     return emails
 
 
+def spatial_choices(field):
+    data = []
+    with open('/srv/app/src_extensions/ckanext-dbca/ckanext/dbca/geospatial_coverage.json', 'r') as file:
+        data = json.load(file)
+
+    choice_list = []
+    for item in data:
+        choice_list.append({
+            'label': item['label'],
+            'value': json.dumps(item['value'], separators=(',', ':'))
+        })
+
+    return choice_list
+
+
 def get_helpers():
     return {
         "extract_emails_from_package": extract_emails_from_package,
+        "spatial_choices": spatial_choices,
     }
