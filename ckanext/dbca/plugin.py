@@ -57,10 +57,8 @@ class DbcaPlugin(plugins.SingletonPlugin):
     # IDoi
     def build_metadata_dict(self, pkg_dict, metadata_dict, errors):
         # Use language set in CKAN config
-        try:
-            metadata_dict['language'] = toolkit.config['ckanext.doi.language']
-        except Exception as e:
-            errors['language'] = e
+        language = toolkit.config.get('ckanext.doi.language', toolkit.config.get('ckan.locale_default'))
+        metadata_dict['language'] = language
             
         # Remove contributors with empty full_name
         # This is a workaround for when maintainer is not set
