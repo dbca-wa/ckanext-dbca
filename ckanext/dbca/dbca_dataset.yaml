@@ -71,10 +71,10 @@ dataset_fields:
 
 - field_name: doi
   label: DOI
-  help_text: Digital Object Identifier
-  form_placeholder: http://dx.doi.org/xxxx/yyyy
+  # Do not display this field in the form
+  form_snippet: 
   display_property: dc:identifier
-  display_snippet: text.html
+  display_snippet: dbca_doi.html
 
 - field_name: citation
   label: Citation
@@ -89,8 +89,7 @@ dataset_fields:
     data resources.
   form_placeholder: Joe Bloggs
   display_property: dc:creator
-  hide_field: 'true'
-  required: 'true'
+  required: true
 
 - field_name: author_email
   label: Author Email
@@ -104,8 +103,7 @@ dataset_fields:
   help_text: The metadata maintainer updates this page on behalf of the author.
   form_placeholder: Joe Bloggs
   display_property: dc:contributor
-  hide_field: 'true'
-  required: 'true'
+  required: true
 
 - field_name: maintainer_email
   label: Maintainer Email

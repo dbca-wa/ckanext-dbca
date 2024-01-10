@@ -5,7 +5,7 @@ import ckan.plugins.toolkit as toolkit
 import ckanext.dbca.cli as cli
 import ckanext.dbca.helpers as helpers
 from ckanext.dbca.logic import (action, validators)
-
+from ckanext.doi.interfaces import IDoi
 
 class DbcaPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
@@ -15,6 +15,7 @@ class DbcaPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IClick)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IValidators)
+    plugins.implements(IDoi, inherit=True)
 
     # IConfigurer
 
@@ -52,3 +53,12 @@ class DbcaPlugin(plugins.SingletonPlugin):
 
     def get_validators(self):
         return validators.get_validators()
+
+    # IDoi
+    def build_metadata_dict(self, pkg_dict, metadata_dict, errors):
+        # Use language set in CKAN config
+        try:
+            metadata_dict['language'] = toolkit.config['ckanext.doi.language']
+        except Exception as e:
+            errors['language'] = e
+        return metadata_dict, errors
