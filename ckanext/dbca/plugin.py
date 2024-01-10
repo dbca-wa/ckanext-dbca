@@ -61,4 +61,11 @@ class DbcaPlugin(plugins.SingletonPlugin):
             metadata_dict['language'] = toolkit.config['ckanext.doi.language']
         except Exception as e:
             errors['language'] = e
+            
+        # Remove contributors with empty full_name
+        # This is a workaround for when maintainer is not set
+        for contributors in metadata_dict['contributors']:
+            if not contributors['full_name']:
+                metadata_dict['contributors'].remove(contributors)
+
         return metadata_dict, errors

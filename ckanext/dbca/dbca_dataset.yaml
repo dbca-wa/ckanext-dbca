@@ -103,7 +103,6 @@ dataset_fields:
   help_text: The metadata maintainer updates this page on behalf of the author.
   form_placeholder: Joe Bloggs
   display_property: dc:contributor
-  required: true
 
 - field_name: maintainer_email
   label: Maintainer Email
