@@ -57,7 +57,7 @@ class DbcaPlugin(plugins.SingletonPlugin):
     # IDoi
     def build_metadata_dict(self, pkg_dict, metadata_dict, errors):
         # Use language set in CKAN config
-        language = toolkit.config.get('ckanext.doi.language', toolkit.config.get('ckan.locale_default'))
+        language = toolkit.config.get('ckanext.doi.language', 'en')
         metadata_dict['language'] = language
             
         # Remove contributors with empty full_name
