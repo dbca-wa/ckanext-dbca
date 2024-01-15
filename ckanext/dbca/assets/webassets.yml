@@ -1,14 +1,3 @@
-dbca_js:
-  filter: rjsmin
-  output: ckanext-dbca/%(version)s-dbca.js
-  extra:
-    preload:
-      - base/main
-  contents:
-    - js/vendor/leaflet/leaflet.js
-    - js/vendor/leaflet.draw/leaflet.draw.js
-    - js/modules/dbca-spatial-form.js
-
 dbca_openlayers:
   filter: rjsmin
   output: ckanext-dbca/%(version)s-dbca-ol.js
@@ -23,8 +12,8 @@ dbca_css:
   filter: cssrewrite
   output: ckanext-dbca/%(version)s-dbca_css.css
   contents:
-    - js/vendor/leaflet/leaflet.css
-    - js/vendor/leaflet.draw/leaflet.draw.css
+    - js/vendor/leaflet/1.9.3/leaflet.css
+    - js/vendor/leaflet.draw/0.4.14/leaflet.draw.css
     - css/dbca.css
 
 dbca_spatial_field_js:

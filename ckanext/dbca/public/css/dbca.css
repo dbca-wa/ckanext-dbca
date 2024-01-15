@@ -5,3 +5,9 @@
  *  * run python setup.py develop
  *  * restart the CKAN container
  */
+
+/* Fix Flask Debug toolbar scrolling */
+#flDebug,
+#flDebug * {
+    overflow-y: auto;
+}

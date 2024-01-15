@@ -1,4 +1,5 @@
 // This file is an override of /srv/app/src/ckanext-geoview/ckanext/geoview/public/js/ol_preview.js
+// DBCA modification on line 125: Allows mapConfig.type == 'Stadia.StamenTerrain' to be used as a base map
 (function () {
     var $_ = _ // keep pointer to underscore, as '_' will may be overridden by a closure variable when down the stack
 
@@ -120,11 +121,12 @@
 
                     mapConfig.type = 'OSM'
                 }
+                // Start of DBCA modification
                 else if (mapConfig.type == 'Stadia.StamenTerrain') {
                     mapConfig.type = 'XYZ'
                     mapConfig.url = this.options.map_config['custom.url']
                 }
-
+                // End of DBCA modification 
                 return OL_HELPERS.createLayerFromConfig(mapConfig, true, callback);
             },
 
