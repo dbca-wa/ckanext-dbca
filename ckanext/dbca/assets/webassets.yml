@@ -6,7 +6,7 @@ dbca_openlayers:
       - base/main
   contents: 
     - js/vendor/underscore/underscore.js
-    - js/modules/dbca-ol-preview-override.js
+    - dbca-ol-preview-override.js
 
 dbca_css:
   filter: cssrewrite
@@ -14,7 +14,7 @@ dbca_css:
   contents:
     - js/vendor/leaflet/1.9.3/leaflet.css
     - js/vendor/leaflet.draw/0.4.14/leaflet.draw.css
-    - css/dbca.css
+    - dbca.css
 
 dbca_spatial_field_js:
   filter: rjsmin
@@ -23,10 +23,10 @@ dbca_spatial_field_js:
     preload:
       - base/main
   contents: 
-    - js/modules/dbca-spatial-field.js
+    - dbca-spatial-field.js
 
 dbca_spatial_field_css:
   filter: cssrewrite
   output: ckanext-dbca/%(version)s-dbca-spatial-field.css
   contents: 
-    - css/dbca-spatial-field.css
+    - dbca-spatial-field.css
