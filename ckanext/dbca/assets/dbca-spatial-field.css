@@ -1,0 +1,3 @@
+#spatial-field-wrapper .form-group:last-child label {
+    display: none;
+}
