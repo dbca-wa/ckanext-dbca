@@ -265,7 +265,7 @@ dataset_fields:
   choices_helper: spatial_choices
   form_placeholder: Paste a valid GeoJSON geometry
   help_text: To select a predefined area from IBRA (bioregions and subregions), IMCRA, LGA, or DBCA's Conservation Estate, start typing the name below. To select Western Australia, type "WA". Alternatively, paste a GeoJSON Polygon or Multipolygon geometry below.  Please visit <a href="https://salsa.digital">LINK TBC</a> for a full list of prepopulated regions.
-  help_allow_html: 'true'
+  help_allow_html: true
   form_attrs:
     class:
     placeholder: Start typing to find the name of a predefined area
