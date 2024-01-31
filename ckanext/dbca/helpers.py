@@ -1,5 +1,6 @@
 import ckan.model as model
 import json
+import os
 
 
 def extract_emails_from_package(package):
@@ -41,7 +42,8 @@ def extract_emails_from_package(package):
 
 def spatial_choices(field):
     data = []
-    with open('/srv/app/src_extensions/ckanext-dbca/ckanext/dbca/geospatial_coverage.json', 'r') as file:
+    file_path = os.path.join(os.path.dirname(__file__), 'geospatial_coverage.json')
+    with open(file_path, 'r') as file:
         data = json.load(file)
 
     choice_list = []
