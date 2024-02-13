@@ -1,4 +1,5 @@
 import ckan.model as model
+import ckan.plugins.toolkit as toolkit
 import json
 import os
 
@@ -56,8 +57,13 @@ def spatial_choices(field):
     return choice_list
 
 
+def get_default_map_coordinates_config():
+    return toolkit.config.get('ckanext.dbca.default_map_coordinates', None)
+
+
 def get_helpers():
     return {
         "extract_emails_from_package": extract_emails_from_package,
         "spatial_choices": spatial_choices,
+        "get_default_map_coordinates_config": get_default_map_coordinates_config,
     }

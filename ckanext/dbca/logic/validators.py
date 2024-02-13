@@ -1,4 +1,5 @@
 import ckan.plugins.toolkit as tk
+import geojson
 import logging
 import datetime
 import pytz
@@ -43,9 +44,27 @@ def dbca_embargo_date_package_visibility(key, data, errors, context):
         errors[key].append(tk._(f"Only private datasets can be embargoed"))
 
 
+def dbca_validate_geojson(value):
+    """
+    Validate the format of GeoJSON.
+    """
+    if len(value) > 0:
+        try:
+            # Load JSON string to geojson object.
+            geojson_obj = geojson.loads(value)
+        except:
+            raise tk.Invalid('Not a valid JSON string.')
+
+        if geojson_obj.__class__.__name__ != 'Polygon':
+            raise tk.Invalid('GeoJSON Polygon is needed.')
+
+    return value
+
+
 def get_validators():
     return {
         "dbca_required": dbca_required,
         "dbca_embargo_date_validator": dbca_embargo_date_validator,
         "dbca_embargo_date_package_visibility": dbca_embargo_date_package_visibility,
+        "dbca_validate_geojson": dbca_validate_geojson,
     }

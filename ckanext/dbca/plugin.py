@@ -19,6 +19,16 @@ class DbcaPlugin(plugins.SingletonPlugin):
 
     # IConfigurer
 
+    def update_config_schema(self, schema):
+        ignore_missing = toolkit.get_validator('ignore_missing')
+        dbca_validate_geojson = toolkit.get_validator('dbca_validate_geojson')
+
+        schema.update({
+            'ckanext.dbca.default_map_coordinates': [ignore_missing, dbca_validate_geojson]
+        })
+
+        return schema
+
     def update_config(self, config_):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
