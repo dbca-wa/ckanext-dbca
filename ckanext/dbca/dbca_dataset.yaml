@@ -264,7 +264,7 @@ dataset_fields:
   display_snippet: dbca_spatial.html
   choices_helper: spatial_choices
   form_placeholder: Paste a valid GeoJSON geometry
-  help_text: To select a predefined area from IBRA (bioregions and subregions), IMCRA, LGA, or DBCA's Conservation Estate, start typing the name below. To select Western Australia, begin typing "Western Australia". Alternatively, paste a GeoJSON Polygon or Multipolygon geometry below.  Please visit <a href="https://bio.wa.gov.au/knowledge/documentation/spatial-metadata">Spatial Metadata</a> for a full list of prepopulated regions.
+  help_text: To select a predefined area from IBRA (bioregions and subregions), IMCRA, LGA, or DBCA's Managed Tenure, start typing the name below. To select Western Australia, begin typing "Western Australia". Alternatively, paste a GeoJSON Polygon or Multipolygon geometry below. Please visit <a href="https://bio.wa.gov.au/knowledge/documentation/spatial-metadata">Spatial Metadata</a> for a full list of prepopulated regions.
   help_allow_html: true
   form_attrs:
     class:
