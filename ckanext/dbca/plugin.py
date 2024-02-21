@@ -1,17 +1,16 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-
-import ckanext.dbca.cli as cli
-import ckanext.dbca.helpers as helpers
-from ckanext.dbca.logic import (action, validators)
+from ckanext.dbca import cli, views, helpers
+from ckanext.dbca.logic import action, validators
 from ckanext.doi.interfaces import IDoi
+
 
 class DbcaPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     # plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IActions)
-    # plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IClick)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IValidators)
@@ -46,8 +45,8 @@ class DbcaPlugin(plugins.SingletonPlugin):
 
     # IBlueprint
 
-    # def get_blueprint(self):
-    #     return views.get_blueprints()
+    def get_blueprint(self):
+        return views.get_blueprints()
 
     # IClick
 
@@ -69,7 +68,7 @@ class DbcaPlugin(plugins.SingletonPlugin):
         # Use language set in CKAN config
         language = toolkit.config.get('ckanext.doi.language', 'en')
         metadata_dict['language'] = language
-            
+
         # Remove contributors with empty full_name
         # This is a workaround for when maintainer is not set
         for contributors in metadata_dict['contributors']:

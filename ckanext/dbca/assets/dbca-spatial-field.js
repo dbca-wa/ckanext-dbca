@@ -1,7 +1,7 @@
 $(document).ready(() => {
     const updateTextAreaValue = (e) => {
-        const value = e.target.value
+        const value = e.added.id
         $('#spatial-field-wrapper textarea').val(value)
     }
-    $('#spatial-field-wrapper select').on('change', updateTextAreaValue)
+    $('#spatial-field-wrapper input[type="text"]').on('change', updateTextAreaValue)
 })
