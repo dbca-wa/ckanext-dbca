@@ -10,16 +10,11 @@
     {% do textarea_field.update({key: value}) %}
   {% endfor %}
 
-  {% set select_data = {} %}
-  {% for key, value in field.items() %}
-    {% do select_data.update({key: value}) %}
-  {% endfor %}
-
   {% set select_field_name = field.get('field_name') ~ '_predefined'%}
-  {% do select_field.update({'field_name': select_field_name, 'help_text': ''}) %}
+  {% do select_field.update({'field_name': select_field_name, 'help_text': '', 'form_placeholder': ''}) %}
   {% do textarea_field.update({'form_attrs': {}}) %}
-  {% do data.update({select_field_name: data[field.get('field_name')]}) %}
+  {% do data.update({select_field_name: h.get_spatial_label_by_geometry(data.get(field.get('field_name')))}) %}
 
-  {%- snippet 'scheming/form_snippets/select.html', field=select_field, data=data, errors=errors -%}
+  {%- snippet 'scheming/form_snippets/text.html', field=select_field, data=data, errors=errors -%}
   {%- snippet 'scheming/form_snippets/textarea.html', field=textarea_field, data=data, errors=errors -%}
 </div>

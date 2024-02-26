@@ -33,7 +33,7 @@ def dbca_embargo_date_validator(embargo_date):
 
     if local_embargo_date < local_now:
         raise tk.Invalid(
-            tk._(f'The embargo date selected must be in the future')
+            tk._('The embargo date selected must be in the future')
         )
 
     return local_embargo_date
@@ -41,7 +41,7 @@ def dbca_embargo_date_validator(embargo_date):
 
 def dbca_embargo_date_package_visibility(key, data, errors, context):
     if data.get(('private',)) == 'False' and data.get(('embargo',)):
-        errors[key].append(tk._(f"Only private datasets can be embargoed"))
+        errors[key].append(tk._("Only private datasets can be embargoed"))
 
 
 def dbca_validate_geojson(value):
@@ -52,7 +52,7 @@ def dbca_validate_geojson(value):
         try:
             # Load JSON string to geojson object.
             geojson_obj = geojson.loads(value)
-        except:
+        except Exception:
             raise tk.Invalid('Not a valid JSON string.')
 
         if geojson_obj.__class__.__name__ != 'Polygon':
