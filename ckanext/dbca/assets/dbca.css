@@ -1,10 +1,4 @@
-/*
- * To apply changes to this CSS file:
- *
- *  * increase the version number in setup.py
- *  * run python setup.py develop
- *  * restart the CKAN container
- */
+/* DBCA CKAN Data Catalogue Theme. */
 
 /* Fix Flask Debug toolbar scrolling */
 #flDebug,
@@ -12,6 +6,8 @@
     overflow-y: auto;
 }
 
+
+/* DBCA CKAN main.css overrides */
 :root {
     /* DBCA Blue */
     --dbca-blue-50: 243 247 252;
@@ -528,4 +524,15 @@ footer.dbca-footer .dbca-footer-nav a:hover {
     footer.dbca-footer .dbca-footer-nav li {
         padding-bottom: 0;
     }
+}
+
+
+/* DOI Override for doi/snippets/package_citation.html  */
+#citation-status {
+    /* This aligns children in a row */
+    display: flex;
+    /* This vertically centers the items in the container */
+    align-items: center;
+    /* Adds space between the children */
+    gap: 10px;
 }

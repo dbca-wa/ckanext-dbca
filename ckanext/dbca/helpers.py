@@ -1,7 +1,7 @@
 import ckan.model as model
 import ckan.plugins.toolkit as toolkit
-import json
-import os
+
+import ckanext.dbca.model as dbca_model
 
 
 def extract_emails_from_package(package):
@@ -41,29 +41,19 @@ def extract_emails_from_package(package):
     return emails
 
 
-def spatial_choices(field):
-    data = []
-    file_path = os.path.join(os.path.dirname(__file__), 'geospatial_coverage.json')
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-
-    choice_list = []
-    for item in data:
-        choice_list.append({
-            'label': item['label'],
-            'value': json.dumps(item['value'], separators=(',', ':'))
-        })
-
-    return choice_list
-
-
 def get_default_map_coordinates_config():
     return toolkit.config.get('ckanext.dbca.default_map_coordinates', None)
+
+
+def get_spatial_label_by_geometry(geometry):
+    if geometry:
+        spatial = dbca_model.DbcaSpatial.get_by_geometry(geometry)
+        return spatial.name if spatial else ''
 
 
 def get_helpers():
     return {
         "extract_emails_from_package": extract_emails_from_package,
-        "spatial_choices": spatial_choices,
         "get_default_map_coordinates_config": get_default_map_coordinates_config,
+        "get_spatial_label_by_geometry": get_spatial_label_by_geometry,
     }

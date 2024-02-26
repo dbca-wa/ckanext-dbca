@@ -1,9 +1,15 @@
+import datetime
+import click
+import os
+import json
+import geojson
+
 import ckan.lib.helpers as helpers
 import ckan.plugins.toolkit as tk
 import ckanext.dbca.helpers as dbca_helpers
 import logging
-import datetime
-import click
+import ckan.model as model
+import ckanext.dbca.model as dbca_model
 
 log = logging.getLogger(__name__)
 
@@ -100,6 +106,59 @@ def scheduled_datasets(ctx):
                     )
                 except Exception as ex:
                     log.error(ex)
+
+
+@dbca.command('load_spatial_data')
+def load_spatial_data():
+    '''
+    This function loads spatial data from a directory specified in the CKAN configuration
+    and applies mappings to the data. It iterates over the spatial data files in the directory,
+    validates the data, and adds it to the database if it meets certain criteria.
+    '''
+    spatial_data_path = tk.config.get('ckanext.dbca.spatial_data_path')
+    log.info("Loading spatial data")
+    if not spatial_data_path or not os.path.exists(spatial_data_path):
+        log.error(f"Spatial data directory {spatial_data_path} not found")
+        return
+    spatial_data_mappings = json.loads(tk.config.get('ckanext.dbca.spatial_data_mappings', '{}'))
+    if not spatial_data_mappings:
+        log.error("Spatial data mappings not found")
+        return
+
+    for spatial_data_file in spatial_data_mappings:
+        geojson_file = os.path.join(spatial_data_path, spatial_data_file)
+        if not os.path.exists(geojson_file):
+            log.error(f"Spatial data file {spatial_data_file} not found")
+            continue
+
+        log.info(f"Loading spatial data from {geojson_file}")
+        with open(geojson_file, 'r') as file:
+            try:
+                data = geojson.load(file)
+                if not data.is_valid:
+                    log.error(f"Invalid spatial data file {spatial_data_file}")
+                    continue
+                spatial_data_mapping = spatial_data_mappings.get(spatial_data_file)
+            except Exception:
+                log.error(f"Error loading spatial data file {spatial_data_file}")
+                continue
+            for item in data.get('features', []):
+                if spatial_data_mapping.get('code') in item.get('properties', {}) and spatial_data_mapping.get('name') in item.get('properties', {}):
+                    name = item.get('properties', {}).get(spatial_data_mapping.get('name'))
+                    if not name:
+                        continue
+                    code = item.get('properties', {}).get(spatial_data_mapping.get('code', '')) or ''
+                    layer = spatial_data_mapping.get('layer')
+                    label = f"{name.title()} ({code.title()}, {layer})"
+                    if dbca_model.DbcaSpatial.get_by_label(label):
+                        continue
+                    geometry = item.get('geometry')
+                    dbca_spatial = dbca_model.DbcaSpatial(label=label, geometry=geometry)
+                    log.info(f"Adding spatial data for {label}")
+                    model.Session.add(dbca_spatial)
+                    model.Session.commit()
+
+    log.info("Spatial data loaded")
 
 
 def get_commands():

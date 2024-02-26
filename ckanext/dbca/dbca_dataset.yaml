@@ -71,10 +71,9 @@ dataset_fields:
 
 - field_name: doi
   label: DOI
-  # Do not display this field in the form
-  form_snippet: 
-  display_property: dc:identifier
-  display_snippet: dbca_doi.html
+  # Do not show this field in the form or in the dataset view
+  form_snippet:
+  display_snippet:
 
 - field_name: citation
   label: Citation
@@ -262,7 +261,6 @@ dataset_fields:
   display_property: dcat:Dataset/dct:spatial
   form_snippet: dbca_spatial.html
   display_snippet: dbca_spatial.html
-  choices_helper: spatial_choices
   form_placeholder: Paste a valid GeoJSON geometry
   help_text: To select a predefined area from IBRA (bioregions and subregions), IMCRA, LGA, or DBCA's Managed Tenure, start typing the name below. To select Western Australia, begin typing "Western Australia". Alternatively, paste a GeoJSON Polygon or Multipolygon geometry below. Please visit <a href="https://bio.wa.gov.au/knowledge/documentation/spatial-metadata">Spatial Metadata</a> for a full list of prepopulated regions.
   help_allow_html: true
@@ -270,6 +268,10 @@ dataset_fields:
     class:
     placeholder: Start typing to find the name of a predefined area
     data-module: autocomplete
+    data-module-source: "/dbca/spatial_autocomplete?incomplete=?"
+    data-module-key: value
+    data-module-label: name
+    data-module-items: 50
 
 resource_fields:
 
