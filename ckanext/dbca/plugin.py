@@ -7,6 +7,7 @@ import ckanext.dbca.helpers as helpers
 from ckanext.dbca.logic import (action, validators)
 from ckanext.doi.interfaces import IDoi
 
+
 class DbcaPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     # plugins.implements(plugins.IAuthFunctions)
@@ -69,7 +70,7 @@ class DbcaPlugin(plugins.SingletonPlugin):
         # Use language set in CKAN config
         language = toolkit.config.get('ckanext.doi.language', 'en')
         metadata_dict['language'] = language
-            
+
         # Remove contributors with empty full_name
         # This is a workaround for when maintainer is not set
         for contributors in metadata_dict['contributors']:

@@ -71,10 +71,9 @@ dataset_fields:
 
 - field_name: doi
   label: DOI
-  # Do not display this field in the form
-  form_snippet: 
-  display_property: dc:identifier
-  display_snippet: dbca_doi.html
+  # Do not show this field in the form or in the dataset view
+  form_snippet:
+  display_snippet:
 
 - field_name: citation
   label: Citation
