@@ -458,6 +458,25 @@ a.tag:hover {
 }
 
 /* Footer */
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 480px;
+}
+
+footer.dbca-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 480px;
+}
+
 footer.dbca-footer {
     background: rgb(45, 47, 50);
     color: white;
@@ -466,8 +485,13 @@ footer.dbca-footer {
     padding: 8rem 1rem;
 }
 
+footer.dbca-footer .row {
+    max-width: 1200px;
+    margin-inline: auto;
+}
+
 footer.dbca-footer .dbca-footer-ack {
-    max-width: 28rem;
+    max-width: 38rem;
 }
 
 footer.dbca-footer .dbca-footer-ack h2 {
@@ -526,13 +550,108 @@ footer.dbca-footer .dbca-footer-nav a:hover {
     }
 }
 
+@media screen and (max-width: 575.98px) {
+    .page-header {
+        overflow: hidden;
+    }
+
+    .page-header .nav-tabs li a {
+        padding: 5px 8px;
+        font-size: 90%;
+    }
+
+    .page-header .nav-tabs {
+        margin-bottom: -1px;
+    }
+}
+
+.module-narrow #dataset-map-container {
+    height: 360px !important;
+}
+
+.primary section {
+    margin-block-end: 2rem;
+}
+
+.context-info .description {
+    word-wrap: break-word;
+    word-break: normal;
+    overflow: auto;
+}
+
+#publisher-tree>ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#publisher-tree>ul ul {
+    margin: 0 0 0 1rem;
+    padding: 0;
+    list-style: square;
+    background: none;
+}
+
+#publisher-tree>ul ul ul {
+    margin: 0 0 0 0.5rem;
+}
+
+#publisher-tree ul.hierarchy-tree>li,
+#publisher-tree ul.hierarchy-tree>li li {
+    background: none;
+    margin: 0;
+    padding: 0;
+    line-height: 28px;
+}
+
+#publisher-tree>ul>li>a,
+#publisher-tree>ul>li>div>a {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+#publisher-tree>ul>li>ul>li>a {
+    font-size: 1rem;
+    font-weight: 600;
+    color: black;
+}
+
+#publisher-tree>ul>li>ul>li>ul>li>a {
+    font-size: 1rem;
+    font-weight: 300;
+    color: black;
+}
+
+#publisher-tree>ul>li {
+    background: rgb(var(--primary-color-lightest) / 0.1);
+    margin-block-end: 1rem;
+    padding: 1rem;
+}
+
+form#showcase-add,
+form.add-to-group {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+}
+
 
 /* DOI Override for doi/snippets/package_citation.html  */
 #citation-status {
-    /* This aligns children in a row */
-    display: flex;
-    /* This vertically centers the items in the container */
-    align-items: center;
-    /* Adds space between the children */
-    gap: 10px;
+    margin-block-start: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid rgb(var(--dbca-yellow-200));
+    border-radius: 3px;
+    background: rgb(var(--dbca-yellow-50));
+}
+
+#citation-status small>strong {
+    display: none;
+}
+
+#citation-status .dataset-private {
+    margin-right: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    white-space: nowrap;
 }
