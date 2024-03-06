@@ -48,7 +48,7 @@ def get_default_map_coordinates_config():
 def get_spatial_label_by_geometry(geometry):
     if geometry:
         spatial = dbca_model.DbcaSpatial.get_by_geometry(geometry)
-        return spatial.name if spatial else ''
+        return spatial.label if spatial else ''
 
 
 def get_helpers():
