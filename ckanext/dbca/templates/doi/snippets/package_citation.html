@@ -1,0 +1,36 @@
+{% ckan_extends %}
+
+{% block citation_status %}
+<div id="citation-status">
+    {% if not pkg_dict['doi_status'] %}
+    <div>
+        <span class="dataset-private label label-inverse"
+                title="This DOI has not yet been published">
+            <i class="fa fa-lock"></i> Private DOI</span>
+        <small>
+            <i class="fa fa-exclamation-sign"></i>
+            <strong>This DOI is not yet resolvable.</strong>
+        </small>
+    </div>
+    <div>
+        <small>
+            You may use the citation in manuscripts, and once this dataset is made public, the DOI URL will point to this page.
+        </small>
+    </div>
+    {% else %}
+    <div>
+        <small>
+            Retrieved: {{ h.render_datetime(h.now(), date_format='%H:%M %d %b %Y (%Z)') }}
+        </small>
+    </div>
+    {% if not res %}
+    <div>
+        {% set datacite_url = 'api.test.datacite.org' if h.doi_test_mode() else 'api.datacite.org' %}
+        <a class="btn btn-mini" title="Download BibTeX" href="https://{{ datacite_url }}/dois/application/x-bibtex/{{ pkg_dict['doi'] }}">
+            <small><i class="fa fa-file"></i>BibTeX</small>
+        </a>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
