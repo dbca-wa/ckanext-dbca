@@ -145,7 +145,7 @@ def load_spatial_data():
             for item in data.get('features', []):
                 if spatial_data_mapping.get('code') in item.get('properties', {}) and spatial_data_mapping.get('name') in item.get('properties', {}):
                     name = item.get('properties', {}).get(spatial_data_mapping.get('name'))
-                    if not name:
+                    if not name or name.strip() == '':
                         continue
                     code = item.get('properties', {}).get(spatial_data_mapping.get('code', '')) or ''
                     layer = spatial_data_mapping.get('layer')
