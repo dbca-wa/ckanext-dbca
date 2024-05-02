@@ -4,6 +4,8 @@ import ckan.plugins.toolkit as toolkit
 from ckanext.dbca import cli, views, helpers
 from ckanext.dbca.logic import action, validators
 from ckanext.doi.interfaces import IDoi
+from ckanext.dbca.db_log_handler import configure_logging
+from ckanext.dbca.model import dbca_logs
 
 
 class DbcaPlugin(plugins.SingletonPlugin):
@@ -32,6 +34,8 @@ class DbcaPlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
         toolkit.add_resource("assets", "ckanext_dbca")
+        if dbca_logs.exists():
+            configure_logging()
 
     # IAuthFunctions
 

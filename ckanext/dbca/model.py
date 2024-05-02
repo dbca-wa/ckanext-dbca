@@ -51,3 +51,26 @@ class DbcaSpatial(DomainObject):
 
 
 meta.mapper(DbcaSpatial, dbca_spatial_table)
+
+dbca_logs = Table('dbca_logs', meta.metadata,
+                  Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+                  Column('timestamp', types.TEXT),
+                  Column('level', types.TEXT),
+                  Column('name', types.TEXT),
+                  Column('message', types.TEXT)
+                  )
+
+
+class DbcaLogs(DomainObject):
+    u"""
+    Dbca logs object.
+    """
+
+    def __init__(self, timestamp=None, level=None, name=None, message=None):
+        self.timestamp = timestamp
+        self.level = level
+        self.name = name
+        self.message = message
+
+
+meta.mapper(DbcaLogs, dbca_logs)
