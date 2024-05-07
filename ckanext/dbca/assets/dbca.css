@@ -458,17 +458,6 @@ a.tag:hover {
 }
 
 /* Footer */
-
-html {
-    height: 100%;
-}
-
-body {
-    min-height: 100%;
-    position: relative;
-    padding-bottom: 480px;
-}
-
 footer.dbca-footer {
     position: absolute;
     left: 0;
@@ -654,4 +643,8 @@ form.add-to-group {
     text-transform: uppercase;
     font-weight: 600;
     white-space: nowrap;
+}
+
+#citation-status .fa {
+    margin-inline-end: 0.5rem;
 }
