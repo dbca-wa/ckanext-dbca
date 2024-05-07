@@ -18,11 +18,6 @@
         </small>
     </div>
     {% else %}
-    <div>
-        <small>
-            Retrieved: {{ h.render_datetime(h.now(), date_format='%H:%M %d %b %Y (%Z)') }}
-        </small>
-    </div>
     {% if not res %}
     <div>
         {% set datacite_url = 'api.test.datacite.org' if h.doi_test_mode() else 'api.datacite.org' %}
