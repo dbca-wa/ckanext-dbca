@@ -216,17 +216,6 @@
 }
 
 /* Footer */
-
-html {
-    height: 100%;
-}
-
-body {
-    min-height: 100%;
-    position: relative;
-    padding-bottom: 480px;
-}
-
 .site-footer {
     background: #333333;
 }
@@ -469,14 +458,6 @@ a.tag:hover {
 }
 
 /* Footer */
-footer.dbca-footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 480px;
-}
-
 footer.dbca-footer {
     background: rgb(45, 47, 50);
     color: white;
