@@ -1,0 +1,6 @@
+{% ckan_extends %}
+
+{% block head_extras -%}
+    {{ super() }}
+    <meta property="og:image" content="{{ h.url_for_static('/img/DBCA_Logo_CKAN_ogimage.png') }}" />
+{% endblock -%}
