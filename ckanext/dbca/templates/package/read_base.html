@@ -4,3 +4,7 @@
     {{ super() }}
     <meta property="og:image" content="{{ h.url_for_static('/img/DBCA_Logo_CKAN_ogimage.png') }}" />
 {% endblock -%}
+
+{% block package_social %}
+    {% snippet "snippets/social.html", pkg_dict=pkg_dict %}
+{% endblock %}
