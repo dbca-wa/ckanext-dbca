@@ -22,6 +22,7 @@ def dbca():
 @dbca.command('scheduled_datasets')
 @click.pass_context
 def scheduled_datasets(ctx):
+    log.info(f"Running scheduled_datasets command")    
     packages = tk.get_action('dbca_get_packages_to_be_published_or_notified')({})
     flask_app = ctx.meta['flask_app']
     aus_tz = tk.h.get_display_timezone()
@@ -51,11 +52,11 @@ def scheduled_datasets(ctx):
             except tk.NotAuthorized:
                 tk.error_shout('Not authorized to perform bulk update')
                 log.error(
-                    f'Error scheduled_datasets {dataset_name}: Site user not authorized to perform bulk update'
+                    f'Error scheduling dataset {dataset_name}: Site user not authorised to perform bulk update'
                 )
             except Exception as e:
                 tk.error_shout(e)
-                log.error(f'Error scheduled_datasets {dataset_name}: {e}')
+                log.error(f'Error scheduling dataset {dataset_name}: {e}')
 
         # Email notification.
         emails_to_notify = {}
@@ -75,8 +76,9 @@ def scheduled_datasets(ctx):
 
                     # Add the current dataset to the list of datasets for this email
                     emails_to_notify[email].append((email, name, package, package_extras))
-            except Exception as ex:
-                log.error(ex)
+            except Exception as e:
+                tk.error_shout(e)
+                log.error(f'Error adding email notification for {package.name}: {e}')
 
         # Loop through emails and the notification
         for email in emails_to_notify:
@@ -104,8 +106,10 @@ def scheduled_datasets(ctx):
                         email_subject,
                         body
                     )
-                except Exception as ex:
-                    log.error(ex)
+                except Exception as e:
+                    tk.error_shout(e)
+                    log.error(f'Error sending email notification {recipient_name}-{package.name}: {e}')
+    log.info(f"Finished running scheduled_datasets command")
 
 
 @dbca.command('load_spatial_data')
