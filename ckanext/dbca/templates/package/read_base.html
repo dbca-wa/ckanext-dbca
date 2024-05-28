@@ -2,9 +2,10 @@
 
 {% block head_extras -%}
     {{ super() }}
-    <meta property="og:image" content="{{ h.url_for_static('/img/DBCA_Logo_CKAN_ogimage.png') }}" />
+    <meta property="og:image" content="{{ h.url_for_static('/img/DBCA_Logo_CKAN_ogimage.png', qualified=True) }}" />
+    <meta name="twitter:site" content="@science_dbca" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:title" content="{{ h.dataset_display_name(pkg) }} - {{ g.site_title }}" />
+    <meta property="twitter:description" content="{{ description|forceescape|trim }}" />
+    <meta property="twitter:image" content="{{ h.url_for_static('/img/DBCA_Logo_CKAN_ogimage.png', qualified=True) }}" />
 {% endblock -%}
-
-{% block package_social %}
-    {% snippet "snippets/social.html", pkg_dict=pkg_dict %}
-{% endblock %}

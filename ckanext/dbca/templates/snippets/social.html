@@ -2,10 +2,8 @@
 
 {% block social_nav %}
     <ul class="nav nav-simple">
-        {% set pkg_dict = pkg_dict or g.pkg_dict %}
-        {% set doi_link = 'https://doi.org/' + pkg_dict['doi'] if pkg_dict and pkg_dict['doi'] else current_url %}
-        <li class="nav-item"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ doi_link }}" target="_blank"><i class="fa-brands fa-linkedin"></i> Linkedin</a></li>
-        <li class="nav-item"><a href="https://twitter.com/share?url={{ doi_link }}" target="_blank"><i class="fa-brands fa-twitter-square"></i> Twitter</a></li>
-        <li class="nav-item"><a href="https://www.facebook.com/sharer.php?u={{ doi_link }}" target="_blank"><i class="fa-brands fa-facebook-square"></i> Facebook</a></li>
+        <li class="nav-item"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ current_url }}" target="_blank"><i class="fa-brands fa-linkedin"></i> Linkedin</a></li>
+        <li class="nav-item"><a href="https://twitter.com/share?url={{ current_url }}" target="_blank"><i class="fa-brands fa-twitter-square"></i> Twitter</a></li>
+        <li class="nav-item"><a href="https://www.facebook.com/sharer.php?u={{ current_url }}" target="_blank"><i class="fa-brands fa-facebook-square"></i> Facebook</a></li>
     </ul>
 {% endblock %}
