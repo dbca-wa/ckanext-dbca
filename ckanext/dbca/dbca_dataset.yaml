@@ -27,6 +27,7 @@ dataset_fields:
 
 - field_name: tag_string
   label: Tags
+  help_text: Tags are used to categorise content for users to easily find. Please add at least one tag to categorise this dataset.
   display_property: dcat:Dataset/dct:keyword
   validators: ignore_missing tag_string_convert
   form_placeholder: type to auto-complete
@@ -84,31 +85,35 @@ dataset_fields:
 
 - field_name: author
   label: Author
-  help_text: The author (dataset custodian) is responsible for the content of attached
-    data resources.
+  help_text: The author (dataset custodian) is responsible for the content of attached data resources.  If in doubt, use "Department of Biodiversity, Conservation and Attractions".
   form_placeholder: Joe Bloggs
   display_property: dc:creator
   required: true
 
 - field_name: author_email
   label: Author Email
-  form_placeholder: joe@example.com
+  help_text: If in doubt, use data.catalogue@dbca.wa.gov.au.
+  form_placeholder: joe@dbca.wa.gov.au
   display_property: dc:creator
   display_snippet: email.html
   display_email_name_field: author
+  required: true
 
 - field_name: maintainer
   label: Maintainer
-  help_text: The metadata maintainer updates this page on behalf of the author.
+  help_text: The metadata maintainer updates this page on behalf of the author. If in doubt, use "Department of Biodiversity, Conservation and Attractions".
   form_placeholder: Joe Bloggs
   display_property: dc:contributor
+  required: true
 
 - field_name: maintainer_email
   label: Maintainer Email
-  form_placeholder: joe@example.com
+  help_text: If in doubt, use data.catalogue@dbca.wa.gov.au.
+  form_placeholder: joe@dbca.wa.gov.au
   display_property: dc:contributor
   display_snippet: email.html
   display_email_name_field: maintainer
+  required: true
 
 - field_name: theme
   label: Theme
