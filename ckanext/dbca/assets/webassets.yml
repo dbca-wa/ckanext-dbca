@@ -1,18 +1,30 @@
-dbca_js:
+dbca_openlayers:
   filter: rjsmin
-  output: ckanext-dbca/%(version)s-dbca.js
+  output: ckanext-dbca/%(version)s-dbca-ol.js
   extra:
     preload:
       - base/main
-  contents:
-    - js/vendor/leaflet/leaflet.js
-    - js/vendor/leaflet.draw/leaflet.draw.js
-    - js/modules/dbca-spatial-form.js
+  contents: 
+    - js/vendor/underscore/underscore.js
+    - dbca-ol-preview-override.js
 
 dbca_css:
   filter: cssrewrite
   output: ckanext-dbca/%(version)s-dbca_css.css
   contents:
-    - js/vendor/leaflet/leaflet.css
-    - js/vendor/leaflet.draw/leaflet.draw.css
-    - css/dbca.css
+    - dbca.css
+
+dbca_spatial_field_js:
+  filter: rjsmin
+  output: ckanext-dbca/%(version)s-dbca-spatial-field.js
+  extra:
+    preload:
+      - base/main
+  contents: 
+    - dbca-spatial-field.js
+
+dbca_spatial_field_css:
+  filter: cssrewrite
+  output: ckanext-dbca/%(version)s-dbca-spatial-field.css
+  contents: 
+    - dbca-spatial-field.css

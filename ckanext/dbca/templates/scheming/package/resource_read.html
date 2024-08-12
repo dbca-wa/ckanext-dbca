@@ -1,0 +1,13 @@
+{% ckan_extends %}
+
+{% block resource_additional_information_inner %}
+  {# Inherit from scheming's resource_read #}
+  {{ super() }}
+  {# Add Archiver html #}
+  {{ h.archiver_is_resource_broken_html(c.resource) }}
+  <br>
+  {{ h.archiver_is_resource_cached_html(c.resource) }}
+  <br>
+  {# Add QA html #}
+  {{ h.qa_openness_stars_resource_html(resource) }}
+{% endblock %}

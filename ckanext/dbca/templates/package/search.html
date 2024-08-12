@@ -1,0 +1,7 @@
+{% ckan_extends %}
+
+{% block secondary_content %}
+  {% set default_extent = h.get_default_map_coordinates_config() %}
+  {% snippet "spatial/snippets/spatial_query.html", default_extent=default_extent %}
+  {{ super() }}
+{% endblock %}

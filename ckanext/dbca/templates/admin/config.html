@@ -1,0 +1,16 @@
+{% ckan_extends %}
+
+{% import 'macros/form.html' as form %}
+
+{% block admin_form %}
+  {{ super() }}
+  {{ 
+    form.textarea(
+    'ckanext.dbca.default_map_coordinates',
+    id='field-ckanext.dbca.default_map_coordinates',
+    label=_('Default map coordinates'),
+    placeholder='GeoJSON polygon',
+    value=data['ckanext.dbca.default_map_coordinates'],
+    error=errors['ckanext.dbca.default_map_coordinates']) 
+  }}
+{% endblock %}

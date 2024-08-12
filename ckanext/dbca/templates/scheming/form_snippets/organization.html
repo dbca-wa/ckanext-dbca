@@ -1,0 +1,21 @@
+{% ckan_extends %}
+
+{% block package_metadata_fields_visibility %}
+  <div class="control-group form-group control-medium">
+    <label for="field-private" class="control-label">{{ _('Visibility') }}</label>
+    <div class="controls">
+      <select id="field-private" name="private" class="form-control">
+        {% for option in [('True', _('Private')), ('False', _('Public'))] %}
+        <option value="{{ option[0] }}" {% if option[0] == data.private|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
+        {% endfor %}
+      </select>
+      {% if data.get('private', 'True')|string == 'False' %}
+        {% import 'macros/form.html' as form %}
+        {{- form.info(
+            text="Reverting a dataset back to private after it was made public means the DOI will no longer point to this page for all users.",
+            classes=["alert", "alert-danger"]
+            ) -}} 
+    {% endif %}
+    </div>
+  </div>
+{% endblock %}
