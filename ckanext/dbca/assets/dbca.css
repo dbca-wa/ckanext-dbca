@@ -640,3 +640,30 @@ form.add-to-group {
 #citation-status .fa {
     margin-inline-end: 0.5rem;
 }
+
+.module-content a {
+    text-decoration: underline dotted;
+}
+
+body .badge,
+body .btn,
+body a.heading,
+.hierarchy-tree-top a,
+.media-grid a,
+.nav a,
+.dataset-heading a {
+    text-decoration: none;
+}
+
+.homepage .module-promotion .featured {
+    display: none;
+}
+
+details {
+    padding-block-start: 1rem;
+    border-top: 1px solid #ccc;
+}
+
+summary {
+    margin-block-end: 1rem;
+}
