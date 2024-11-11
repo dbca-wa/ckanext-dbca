@@ -2,7 +2,7 @@
 import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ckan.plugins.toolkit import config
+from ckan.plugins.toolkit import config, asbool
 
 from ckanext.dbca.model import dbca_logs
 
@@ -27,9 +27,10 @@ class SQLAlchemyHandler(logging.Handler):
 
 
 def configure_logging():
-    # Add SQLAlchemyHandler to log to database
-    db_handler = SQLAlchemyHandler(config.get('sqlalchemy.url'))
-    keys = ['root', 'ckan', 'ckanext', 'werkzeug', 'saml2']
-    for key in keys:
-        logger = logging.getLogger(key)
-        logger.addHandler(db_handler)
+    if asbool(config.get('ckanext.dbca.enable_db_logging', False)):
+        # Add SQLAlchemyHandler to log to database
+        db_handler = SQLAlchemyHandler(config.get('sqlalchemy.url'))
+        keys = ['root', 'ckan', 'ckanext', 'werkzeug', 'saml2']
+        for key in keys:
+            logger = logging.getLogger(key)
+            logger.addHandler(db_handler)
