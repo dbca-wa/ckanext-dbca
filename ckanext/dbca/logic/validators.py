@@ -8,12 +8,6 @@ import pytz
 log = logging.getLogger(__name__)
 
 
-def dbca_required(value):
-    if not value or value is tk.missing:
-        raise tk.Invalid(tk._("Required"))
-    return value
-
-
 def dbca_embargo_date_validator(embargo_date):
     '''Validate Embargo Date for Australia/Perth timezone'''
     if not embargo_date:
@@ -63,7 +57,6 @@ def dbca_validate_geojson(value):
 
 def get_validators():
     return {
-        "dbca_required": dbca_required,
         "dbca_embargo_date_validator": dbca_embargo_date_validator,
         "dbca_embargo_date_package_visibility": dbca_embargo_date_package_visibility,
         "dbca_validate_geojson": dbca_validate_geojson,
