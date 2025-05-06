@@ -263,3 +263,9 @@ resource_fields:
   label: Format
   preset: resource_format_autocomplete
   display_property: dcat:Dataset/dcat:distribution/dcat:Distribution/dcat:format
+
+- field_name: size
+  label: Size
+  form_snippet:
+  display_snippet:
+  validators: ignore_missing int_validator dbca_resource_size

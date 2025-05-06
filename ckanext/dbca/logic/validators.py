@@ -55,9 +55,29 @@ def dbca_validate_geojson(value):
     return value
 
 
+def dbca_resource_size(key, data, errors, context):
+    # The new validator checks to see if the resource is an upload
+    url_type_key = key[0:2] + ('url_type',)
+    resource_upload = data.get(url_type_key) == 'upload'
+    if not resource_upload:
+        return
+
+    # TODO: Get the logged in user and the datasets (package) organisation ID from the context
+    # TODO: Check what role the user has for this organisation
+
+    resource_size = data.get(key)
+    # TODO: Get the CKAN config value for the resource upload limit for the user's role (convert the config value from MB to bytes)
+    resource_size_limit = tk.config.get('ckan.max_resource_size')
+    # Validate that the resource size is not over the limit
+    if resource_size > resource_size_limit:
+        # Raise an Invalid exception with message 'File upload too large'
+        raise tk.Invalid('File upload too large')
+    
+
 def get_validators():
     return {
         "dbca_embargo_date_validator": dbca_embargo_date_validator,
         "dbca_embargo_date_package_visibility": dbca_embargo_date_package_visibility,
         "dbca_validate_geojson": dbca_validate_geojson,
+        "dbca_resource_size": dbca_resource_size
     }
