@@ -1,4 +1,5 @@
 import ckan.plugins.toolkit as tk
+import ckan.authz as authz
 import geojson
 import logging
 import datetime
@@ -62,17 +63,58 @@ def dbca_resource_size(key, data, errors, context):
     if not resource_upload:
         return
 
-    # TODO: Get the logged in user and the datasets (package) organisation ID from the context
-    # TODO: Check what role the user has for this organisation
+    # Get the max resource size from the CKAN config
+    max_resource_size = int(tk.config.get('ckan.max_resource_size'))
+    sysadmin_resource_upload_limit = int(tk.config.get('ckanext.dbca.sysadmin_resource_upload_limit'))
+    org_admin_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_admin_resource_upload_limit'))
+    org_editor_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_editor_resource_upload_limit'))
 
+    # Convert the max resource size from MB to bytes
+    resource_size_limit_bytes = max_resource_size * 1024 * 1024
+    sysadmin_resource_upload_limit_bytes = sysadmin_resource_upload_limit * 1024 * 1024
+    org_admin_resource_upload_limit_bytes = org_admin_resource_upload_limit * 1024 * 1024
+    org_editor_resource_upload_limit_bytes = org_editor_resource_upload_limit * 1024 * 1024
+
+    # Get the resource size from the data, and throw error if it's over the system limit.
     resource_size = data.get(key)
-    # TODO: Get the CKAN config value for the resource upload limit for the user's role (convert the config value from MB to bytes)
-    resource_size_limit = tk.config.get('ckan.max_resource_size')
-    # Validate that the resource size is not over the limit
-    if resource_size > resource_size_limit:
-        # Raise an Invalid exception with message 'File upload too large'
+    if resource_size > resource_size_limit_bytes:
         raise tk.Invalid('File upload too large')
-    
+
+    # Get the logged in user.
+    user = context.get('user')
+    is_sysadmin = authz.is_sysadmin(user)
+
+    # If the user is sysadmin, allow them to upload up to the sysadmin limit.
+    if is_sysadmin and resource_size <= sysadmin_resource_upload_limit_bytes:
+        return
+
+    # Get the organization ID from the data
+    org_id = data.get(('owner_org',))
+
+    # Get the user's role in the organization
+    user_role = authz.users_role_for_group_or_org(org_id, user)
+
+    # If the user is not a member of the organization, raise an error.
+    if user_role is None:
+        raise tk.Invalid('User is not a member of the organization')
+
+    # If the user is an admin, allow them to upload up to the org admin limit.
+    if user_role == 'admin':
+        if resource_size <= org_admin_resource_upload_limit_bytes:
+            return
+        else:
+            raise tk.Invalid('File upload too large')
+
+    # If the user is an editor, allow them to upload up to the org editor limit.
+    if user_role == 'editor':
+        if resource_size <= org_editor_resource_upload_limit_bytes:
+            return
+        else:
+            raise tk.Invalid('File upload too large')
+
+    # Catch other  an error.
+    raise tk.Invalid('Unknown error')
+
 
 def get_validators():
     return {
