@@ -64,21 +64,17 @@ def dbca_resource_size(key, data, errors, context):
         return
 
     # Get the max resource size from the CKAN config
-    max_resource_size = int(tk.config.get('ckan.max_resource_size'))
     sysadmin_resource_upload_limit = int(tk.config.get('ckanext.dbca.sysadmin_resource_upload_limit'))
     org_admin_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_admin_resource_upload_limit'))
     org_editor_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_editor_resource_upload_limit'))
 
     # Convert the max resource size from MB to bytes
-    resource_size_limit_bytes = max_resource_size * 1024 * 1024
     sysadmin_resource_upload_limit_bytes = sysadmin_resource_upload_limit * 1024 * 1024
     org_admin_resource_upload_limit_bytes = org_admin_resource_upload_limit * 1024 * 1024
     org_editor_resource_upload_limit_bytes = org_editor_resource_upload_limit * 1024 * 1024
 
-    # Get the resource size from the data, and throw error if it's over the system limit.
+    # Get the resource size from the data
     resource_size = data.get(key)
-    if resource_size > resource_size_limit_bytes:
-        raise tk.Invalid('File upload too large')
 
     # Get the logged in user.
     user = context.get('user')
@@ -111,9 +107,6 @@ def dbca_resource_size(key, data, errors, context):
             return
         else:
             raise tk.Invalid('File upload too large')
-
-    # Catch other  an error.
-    raise tk.Invalid('Unknown error')
 
 
 def get_validators():
