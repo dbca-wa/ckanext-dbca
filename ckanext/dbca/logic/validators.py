@@ -1,4 +1,5 @@
 import ckan.plugins.toolkit as tk
+import ckan.authz as authz
 import geojson
 import logging
 import datetime
@@ -55,9 +56,63 @@ def dbca_validate_geojson(value):
     return value
 
 
+def dbca_resource_size(key, data, errors, context):
+    # The new validator checks to see if the resource is an upload
+    url_type_key = key[0:2] + ('url_type',)
+    resource_upload = data.get(url_type_key) == 'upload'
+    if not resource_upload:
+        return
+
+    # Get the max resource size from the CKAN config
+    sysadmin_resource_upload_limit = int(tk.config.get('ckanext.dbca.sysadmin_resource_upload_limit'))
+    org_admin_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_admin_resource_upload_limit'))
+    org_editor_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_editor_resource_upload_limit'))
+
+    # Convert the max resource size from MB to bytes
+    sysadmin_resource_upload_limit_bytes = sysadmin_resource_upload_limit * 1024 * 1024
+    org_admin_resource_upload_limit_bytes = org_admin_resource_upload_limit * 1024 * 1024
+    org_editor_resource_upload_limit_bytes = org_editor_resource_upload_limit * 1024 * 1024
+
+    # Get the resource size from the data
+    resource_size = data.get(key)
+
+    # Get the logged in user.
+    user = context.get('user')
+    is_sysadmin = authz.is_sysadmin(user)
+
+    # If the user is sysadmin, allow them to upload up to the sysadmin limit.
+    if is_sysadmin and resource_size <= sysadmin_resource_upload_limit_bytes:
+        return
+
+    # Get the organization ID from the data
+    org_id = data.get(('owner_org',))
+
+    # Get the user's role in the organization
+    user_role = authz.users_role_for_group_or_org(org_id, user)
+
+    # If the user is not a member of the organization, raise an error.
+    if user_role is None:
+        raise tk.Invalid('User is not a member of the organization')
+
+    # If the user is an admin, allow them to upload up to the org admin limit.
+    if user_role == 'admin':
+        if resource_size <= org_admin_resource_upload_limit_bytes:
+            return
+        else:
+            raise tk.Invalid('File upload too large')
+
+    # If the user is an editor, allow them to upload up to the org editor limit.
+    if user_role == 'editor':
+        if resource_size <= org_editor_resource_upload_limit_bytes:
+            return
+        else:
+            raise tk.Invalid('File upload too large')
+
+
 def get_validators():
     return {
         "dbca_embargo_date_validator": dbca_embargo_date_validator,
         "dbca_embargo_date_package_visibility": dbca_embargo_date_package_visibility,
         "dbca_validate_geojson": dbca_validate_geojson,
+        "dbca_resource_size": dbca_resource_size
     }
