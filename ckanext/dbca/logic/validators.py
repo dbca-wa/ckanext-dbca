@@ -81,8 +81,11 @@ def dbca_resource_size(key, data, errors, context):
     is_sysadmin = authz.is_sysadmin(user)
 
     # If the user is sysadmin, allow them to upload up to the sysadmin limit.
-    if is_sysadmin and resource_size <= sysadmin_resource_upload_limit_bytes:
-        return
+    if is_sysadmin:
+        if resource_size <= sysadmin_resource_upload_limit_bytes:
+            return
+        else:
+            raise tk.Invalid('File upload too large')
 
     # Get the organization ID from the data
     org_id = data.get(('owner_org',))
