@@ -69,9 +69,10 @@ def dbca_resource_size(key, data, errors, context):
     org_editor_resource_upload_limit = int(tk.config.get('ckanext.dbca.org_editor_resource_upload_limit'))
 
     # Convert the max resource size from MB to bytes
-    sysadmin_resource_upload_limit_bytes = sysadmin_resource_upload_limit * 1024 * 1024
-    org_admin_resource_upload_limit_bytes = org_admin_resource_upload_limit * 1024 * 1024
-    org_editor_resource_upload_limit_bytes = org_editor_resource_upload_limit * 1024 * 1024
+    decimal_mb_to_bytes = 1000 * 1000
+    sysadmin_resource_upload_limit_bytes = sysadmin_resource_upload_limit * decimal_mb_to_bytes
+    org_admin_resource_upload_limit_bytes = org_admin_resource_upload_limit * decimal_mb_to_bytes
+    org_editor_resource_upload_limit_bytes = org_editor_resource_upload_limit * decimal_mb_to_bytes
 
     # Get the resource size from the data
     resource_size = data.get(key)
