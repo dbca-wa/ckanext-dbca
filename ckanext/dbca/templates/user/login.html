@@ -1,0 +1,6 @@
+{% ckan_extends %}
+
+{% block help_forgotten %}
+    {{ super() }}
+    {% snippet "snippets/collection_notice_sidebar.html" %}
+{% endblock %}
