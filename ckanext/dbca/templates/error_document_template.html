@@ -1,0 +1,32 @@
+{# Error pages only: do not use the default header (page.html -> include header.html),
+   which triggers build_nav_main / ckanext-pages and can fail when the DB is unhealthy.
+   Markup matches core CKAN header regions (account-masthead + masthead) without includes. #}
+{% ckan_extends %}
+
+{% block header %}
+  <header class="masthead" role="banner">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <hgroup class="{{ g.header_class }} navbar-left">
+          {% block error_header_logo %}
+            {% if g.site_logo %}
+              <a class="logo" href="/" title="{{ g.site_title|default('') }}">
+                <img
+                  src="{{ h.url_for_static_or_external(g.site_logo) }}"
+                  alt="{{ g.site_title|default(_('Data catalogue'), true) }}"
+                />
+              </a>
+            {% else %}
+              <h1 class="m-0">
+                <a href="/">{{ g.site_title|default(_('Data catalogue'), true) }}</a>
+              </h1>
+              {% if g.site_description %}
+                <h2 class="h5 text-muted mt-1 mb-0">{{ g.site_description }}</h2>
+              {% endif %}
+            {% endif %}
+          {% endblock %}
+        </hgroup>
+      </nav>
+    </div>
+  </header>
+{% endblock %}
