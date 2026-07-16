@@ -1,5 +1,6 @@
 import ckan.plugins.toolkit as tk
 import ckan.authz as authz
+import ckan.model as model
 import geojson
 import logging
 import datetime
@@ -7,6 +8,27 @@ import pytz
 
 
 log = logging.getLogger(__name__)
+
+
+def _dbca_users_role_for_group_or_org_hierarchy(group_id, user_name):
+    """Return the user's role for a group/org or one of its parents."""
+    user_role = authz.users_role_for_group_or_org(group_id, user_name)
+    if user_role:
+        return user_role
+
+    group = model.Group.get(group_id)
+    if not group:
+        return None
+
+    parent_groups = group.get_parent_group_hierarchy(type=group.type)
+    for parent_group in reversed(parent_groups):
+        user_role = authz.users_role_for_group_or_org(
+            parent_group.id, user_name
+        )
+        if user_role:
+            return user_role
+
+    return None
 
 
 def dbca_embargo_date_validator(embargo_date):
@@ -91,8 +113,8 @@ def dbca_resource_size(key, data, errors, context):
     # Get the organization ID from the data
     org_id = data.get(('owner_org',))
 
-    # Get the user's role in the organization
-    user_role = authz.users_role_for_group_or_org(org_id, user)
+    # Get the user's role in the organization or one of its parents.
+    user_role = _dbca_users_role_for_group_or_org_hierarchy(org_id, user)
 
     # If the user is not a member of the organization, raise an error.
     if user_role is None:
