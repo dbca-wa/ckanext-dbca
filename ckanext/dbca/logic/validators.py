@@ -110,7 +110,7 @@ def dbca_resource_size(key, data, errors, context):
 
     # If the user is not a member of the organization, raise an error.
     if user_role is None:
-        raise tk.Invalid('User is not a member of the organization')
+        raise tk.Invalid('Upload size limit could not be determined — you need a role in this organisation or a parent organisation')
 
     # If the user is an admin, allow them to upload up to the org admin limit.
     if user_role == 'admin':
