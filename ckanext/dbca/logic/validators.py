@@ -9,16 +9,20 @@ import pytz
 log = logging.getLogger(__name__)
 
 
-def _dbca_users_role_for_group_or_org_hierarchy(group_id):
-    """Return the user's role for an org, including inherited hierarchy roles."""
-    organizations = tk.h.organizations_available(
-        permission='update_dataset',
-        include_dataset_count=False
-    )
+def _dbca_users_role_for_group_or_org_hierarchy(group_id, user):
+    """Return the nearest direct org role, including inherited hierarchy roles."""
+    if not group_id or not user:
+        return None
 
-    for organization in organizations:
-        if group_id == organization.get('id'):
-            return organization.get('capacity')
+    role = authz.users_role_for_group_or_org(group_id, user)
+    if role:
+        return role
+
+    parents = tk.h.group_tree_parents(group_id)
+    for parent in reversed(parents):
+        role = authz.users_role_for_group_or_org(parent.get('id'), user)
+        if role:
+            return role
 
     return None
 
@@ -106,7 +110,7 @@ def dbca_resource_size(key, data, errors, context):
     org_id = data.get(('owner_org',))
 
     # Get the user's role in the organization or one of its parents.
-    user_role = _dbca_users_role_for_group_or_org_hierarchy(org_id)
+    user_role = _dbca_users_role_for_group_or_org_hierarchy(org_id, user)
 
     # If the user is not a member of the organization, raise an error.
     if user_role is None:
