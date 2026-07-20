@@ -9,6 +9,24 @@ import pytz
 log = logging.getLogger(__name__)
 
 
+def _dbca_users_role_for_group_or_org_hierarchy(group_id, user):
+    """Return the nearest direct org role, including inherited hierarchy roles."""
+    if not group_id or not user:
+        return None
+
+    role = authz.users_role_for_group_or_org(group_id, user)
+    if role:
+        return role
+
+    parents = tk.h.group_tree_parents(group_id)
+    for parent in reversed(parents):
+        role = authz.users_role_for_group_or_org(parent.get('id'), user)
+        if role:
+            return role
+
+    return None
+
+
 def dbca_embargo_date_validator(embargo_date):
     '''Validate Embargo Date for Australia/Perth timezone'''
     if not embargo_date:
@@ -91,12 +109,12 @@ def dbca_resource_size(key, data, errors, context):
     # Get the organization ID from the data
     org_id = data.get(('owner_org',))
 
-    # Get the user's role in the organization
-    user_role = authz.users_role_for_group_or_org(org_id, user)
+    # Get the user's role in the organization or one of its parents.
+    user_role = _dbca_users_role_for_group_or_org_hierarchy(org_id, user)
 
-    # If the user is not a member of the organization, raise an error.
+    # No role on this org or any parent — cannot determine upload size limit.
     if user_role is None:
-        raise tk.Invalid('User is not a member of the organization')
+        raise tk.Invalid('Upload size limit could not be determined — you need a role in this organisation or a parent organisation')
 
     # If the user is an admin, allow them to upload up to the org admin limit.
     if user_role == 'admin':
