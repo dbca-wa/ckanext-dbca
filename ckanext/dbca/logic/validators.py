@@ -112,7 +112,7 @@ def dbca_resource_size(key, data, errors, context):
     # Get the user's role in the organization or one of its parents.
     user_role = _dbca_users_role_for_group_or_org_hierarchy(org_id, user)
 
-    # If the user is not a member of the organization, raise an error.
+    # No role on this org or any parent — cannot determine upload size limit.
     if user_role is None:
         raise tk.Invalid('Upload size limit could not be determined — you need a role in this organisation or a parent organisation')
 
