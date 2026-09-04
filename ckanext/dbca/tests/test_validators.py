@@ -264,3 +264,72 @@ def test_dbca_resource_size_rejects_user_without_direct_or_parent_org_role(monke
         match="Upload size limit could not be determined",
     ):
         validators.dbca_resource_size(key, data, {}, {"user": "viewer"})
+
+
+def set_perth_timezone(monkeypatch):
+    monkeypatch.setattr(
+        validators.tk.h,
+        "get_display_timezone",
+        lambda: validators.pytz.timezone("Australia/Perth"),
+        raising=False,
+    )
+
+
+def set_endpoint(monkeypatch, endpoint):
+    monkeypatch.setattr(validators.tk, "get_endpoint", lambda: endpoint)
+
+
+def test_dbca_embargo_date_validator_returns_a_date_not_a_datetime(monkeypatch):
+    set_perth_timezone(monkeypatch)
+    set_endpoint(monkeypatch, ("dataset", "edit"))
+
+    embargo = validators.datetime.datetime(2999, 1, 1, 0, 0)
+
+    assert validators.dbca_embargo_date_validator(embargo) == validators.datetime.date(2999, 1, 1)
+
+
+def test_dbca_embargo_date_validator_returns_a_date_on_resource_endpoints(monkeypatch):
+    """Adding or editing a resource must not rewrite the extra as a datetime."""
+    set_perth_timezone(monkeypatch)
+    embargo = validators.datetime.datetime(2999, 1, 1, 0, 0)
+
+    for endpoint in (("dataset_resource", "new"), ("dataset_resource", "edit")):
+        set_endpoint(monkeypatch, endpoint)
+
+        assert validators.dbca_embargo_date_validator(embargo) == validators.datetime.date(2999, 1, 1)
+
+
+def test_dbca_embargo_date_validator_allows_a_passed_date_on_resource_endpoints(monkeypatch):
+    """The date is only checked on the dataset form, so a resource can still be saved."""
+    set_perth_timezone(monkeypatch)
+    set_endpoint(monkeypatch, ("dataset_resource", "edit"))
+
+    embargo = validators.datetime.datetime(2000, 1, 1, 0, 0)
+
+    assert validators.dbca_embargo_date_validator(embargo) == validators.datetime.date(2000, 1, 1)
+
+
+def test_dbca_embargo_date_validator_rejects_a_past_date(monkeypatch):
+    set_perth_timezone(monkeypatch)
+    set_endpoint(monkeypatch, ("dataset", "edit"))
+
+    embargo = validators.datetime.datetime(2000, 1, 1, 0, 0)
+
+    with pytest.raises(validators.tk.Invalid, match="must be in the future"):
+        validators.dbca_embargo_date_validator(embargo)
+
+
+def test_dbca_embargo_date_validator_allows_today(monkeypatch):
+    set_perth_timezone(monkeypatch)
+    set_endpoint(monkeypatch, ("dataset", "edit"))
+
+    aus_tz = validators.pytz.timezone("Australia/Perth")
+    today = validators.datetime.datetime.now(aus_tz).date()
+    embargo = validators.datetime.datetime(today.year, today.month, today.day)
+
+    assert validators.dbca_embargo_date_validator(embargo) == today
+
+
+def test_dbca_embargo_date_validator_ignores_an_empty_value():
+    assert validators.dbca_embargo_date_validator(None) is None
+    assert validators.dbca_embargo_date_validator("") is None

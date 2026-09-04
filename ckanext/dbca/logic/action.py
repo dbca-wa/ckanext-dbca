@@ -1,4 +1,5 @@
 import datetime
+import logging
 import pytz
 import json
 
@@ -6,6 +7,21 @@ import ckan.model as model
 import ckan.plugins.toolkit as tk
 import ckan.logic as logic
 import ckanext.dbca.model as dbca_model
+
+log = logging.getLogger(__name__)
+
+
+def _parse_embargo_date(value):
+    '''
+    Parse an embargo package_extra value, or return None if it is unusable.
+    Historic rows were written with a time component, so accept both formats.
+    '''
+    if not value:
+        return None
+    try:
+        return datetime.datetime.strptime(value[:10], '%Y-%m-%d').date()
+    except (TypeError, ValueError):
+        return None
 
 
 @tk.side_effect_free
@@ -36,8 +52,14 @@ def dbca_get_packages_to_be_published_or_notified(context, data_dict):
 
     # Check each dataset for action
     for package, package_extra in packages:
-        # Convert embargo date string to date object
-        embargo_date = datetime.datetime.strptime(package_extra.value, '%Y-%m-%d').date()
+        # Convert embargo date string to date object. Skip the dataset rather
+        # than raising, so one bad value cannot stop every other dataset.
+        embargo_date = _parse_embargo_date(package_extra.value)
+        if embargo_date is None:
+            log.error(
+                f"Skipping dataset {package.name}: unreadable embargo date {package_extra.value!r}"
+            )
+            continue
 
         if embargo_date <= local_now:
             packages_to_publish.append((package, package_extra))

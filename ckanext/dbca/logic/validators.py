@@ -31,18 +31,23 @@ def dbca_embargo_date_validator(embargo_date):
     '''Validate Embargo Date for Australia/Perth timezone'''
     if not embargo_date:
         return
-    if tk.get_endpoint() == ('dataset_resource', 'new') or tk.get_endpoint() == ('dataset_resource', 'edit'):
-        return embargo_date
 
     log.debug(f"Embargo date received to {embargo_date}")
+
+    # Embargo date is assumed to be Perth from the web form. It is stored as text
+    # in package_extra, so always narrow to a date -- a datetime persists as
+    # "YYYY-MM-DD HH:MM:SS" and the scheduled_datasets job cannot parse it.
+    local_embargo_date = embargo_date.date() if isinstance(embargo_date, datetime.datetime) else embargo_date
+
+    # The resource forms re-run the dataset schema, so an existing embargo date
+    # that has since passed would fail the check below and block the save.
+    if tk.get_endpoint() in (('dataset_resource', 'new'), ('dataset_resource', 'edit')):
+        return local_embargo_date
 
     # UTC now converted to Perth timezone
     aus_tz = tk.h.get_display_timezone()
     utc_now = pytz.utc.localize(datetime.datetime.utcnow())
     local_now = utc_now.astimezone(aus_tz).date()
-
-    # Embargo date is assumed to be Perth from the web form so we are adding Perth timezone
-    local_embargo_date = aus_tz.localize(embargo_date).date()
 
     if local_embargo_date < local_now:
         raise tk.Invalid(
