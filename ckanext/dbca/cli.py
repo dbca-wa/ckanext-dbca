@@ -22,8 +22,14 @@ def dbca():
 @dbca.command('scheduled_datasets')
 @click.pass_context
 def scheduled_datasets(ctx):
-    log.info(f"Running scheduled_datasets command")    
-    packages = tk.get_action('dbca_get_packages_to_be_published_or_notified')({})
+    log.info("Running scheduled_datasets command")
+    try:
+        packages = tk.get_action('dbca_get_packages_to_be_published_or_notified')({})
+    except Exception as e:
+        tk.error_shout(e)
+        log.error(f'Error collecting scheduled datasets: {e}')
+        return
+
     flask_app = ctx.meta['flask_app']
     aus_tz = tk.h.get_display_timezone()
 
