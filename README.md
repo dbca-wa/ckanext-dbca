@@ -99,35 +99,35 @@ the test dependencies available, the equivalent direct command is:
 
 ## Releasing a new version of ckanext-dbca
 
-If ckanext-dbca should be available on PyPI you can follow these steps to publish a new version:
+This extension is not published to PyPI. It is installed from git and pinned by
+the DBCA CKAN project (`ckan-docker`), which builds the production images. That
+project's release checks require the pin to be an immutable, released ref, so a
+release here is a prerequisite for a ckan-docker release to master.
 
-1. Update the version number in the `setup.py` file. See [PEP 440](http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers) for how to choose version numbers.
+Branches: work lands on `develop`; `main` is the released branch.
 
-2. Make sure you have the latest version of necessary packages:
+1. Update the version number in `setup.py`. See [PEP 440](https://peps.python.org/pep-0440/#public-version-identifiers)
+   for how to choose one.
 
-    pip install --upgrade setuptools wheel twine
+2. Raise a release PR from `develop` into `main` and merge it once the checks pass.
 
-3. Create a source and binary distributions of the new version:
+3. Tag the merge commit on `main` with the version number from `setup.py`, with no
+   `v` prefix, matching the tags used by ckan-docker:
 
-       python setup.py sdist bdist_wheel && twine check dist/*
+       git checkout main && git pull
+       git tag -a 1.0.0 -m "ckanext-dbca 1.0.0"
+       git push origin 1.0.0
 
-   Fix any errors you get.
+4. Pin the new tag in ckan-docker, in `ckan/setup/dbca_requirements.sh`:
 
-4. Upload the source distribution to PyPI:
+       pip3 install -e git+https://github.com/dbca-wa/ckanext-dbca.git@${CKANEXT_DBCA_REF:-1.0.0}#egg=ckanext-dbca
 
-       twine upload dist/*
+   Its `.github/scripts/check-ckanext-dbca-pin.sh` verifies the pin is not a
+   branch, is reachable from `main`, and that `develop` is level with `main`.
+   Run it locally from the ckan-docker root before raising the release PR there.
 
-5. Commit any outstanding changes:
-
-       git commit -a
-       git push
-
-6. Tag the new release of the project on GitHub with the version number from
-   the `setup.py` file. For example if the version number in `setup.py` is
-   0.0.1 then do:
-
-       git tag 0.0.1
-       git push --tags
+Note that the dev image overrides the pin with `CKANEXT_DBCA_REF=develop`, so local
+development tracks this branch rather than the released tag.
 
 ## License
 
