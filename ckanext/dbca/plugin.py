@@ -3,7 +3,8 @@ import logging
 import ckan.model as model
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from ckan.plugins.interfaces import IMiddleware
+from ckan.plugins.interfaces import IMiddleware, IConfigurable
+from sqlalchemy import inspect as sa_inspect
 
 from ckanext.dbca import cli, views, helpers
 from ckanext.dbca.logic import action, validators
@@ -16,6 +17,7 @@ log = logging.getLogger(__name__)
 
 class DbcaPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IConfigurable)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IClick)
@@ -40,7 +42,12 @@ class DbcaPlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
         toolkit.add_resource("assets", "ckanext_dbca")
-        if dbca_logs.exists():
+
+    # IConfigurable
+
+    def configure(self, config_):
+        engine = model.meta.engine
+        if engine is not None and sa_inspect(engine).has_table(dbca_logs.name):
             configure_logging()
 
     # IMiddleware
@@ -72,6 +79,10 @@ class DbcaPlugin(plugins.SingletonPlugin):
                     "ckanext-dbca: could not roll back ORM after unhandled request error"
                 )
 
+        return app
+
+    def make_error_log_middleware(self, app, config):
+        """Required by IMiddleware; no error-log middleware is needed here."""
         return app
 
     # IActions

@@ -80,9 +80,21 @@ do:
 
 ## Tests
 
-To run the tests, do:
+In this project, run extension tests from the CKAN container via `ahoy` so the
+CKAN dependencies and config are available.
 
-    pytest --ckan-ini=test.ini
+From the repository root (`dbca-wa`), run all ckanext-dbca tests with:
+
+    ahoy run "cd /srv/app/src_extensions/ckanext-dbca && pytest --ckan-ini /srv/app/config/dbca.ini ckanext/dbca/tests"
+
+To run a single test module, pass the module path to pytest:
+
+    ahoy run "cd /srv/app/src_extensions/ckanext-dbca && pytest --ckan-ini /srv/app/config/dbca.ini ckanext/dbca/tests/test_validators.py"
+
+If you are already inside a CKAN environment with this extension installed and
+the test dependencies available, the equivalent direct command is:
+
+    pytest --ckan-ini /srv/app/config/dbca.ini ckanext/dbca/tests
 
 
 ## Releasing a new version of ckanext-dbca
