@@ -81,6 +81,10 @@ class DbcaPlugin(plugins.SingletonPlugin):
 
         return app
 
+    def make_error_log_middleware(self, app, config):
+        """Required by IMiddleware; no error-log middleware is needed here."""
+        return app
+
     # IActions
 
     def get_actions(self):
