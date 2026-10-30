@@ -114,6 +114,20 @@
     background: var(--bg-color-800);
 }
 
+.account-masthead .account .btn {
+  color: white;
+  height: 31px;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 0;
+
+  &:hover {
+    color: white;
+    background-color: var(--bg-color-900);
+    text-decoration: none;
+  }
+}
+
 .account-masthead .account ul li a {
     color: white;
 }
